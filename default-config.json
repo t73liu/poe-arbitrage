@@ -1,0 +1,196 @@
+{
+  "league": "Delirium",
+  "hardcore": false,
+  "includeAFK": false,
+  "players": {
+    "favorite": [],
+    "ignored": []
+  },
+  "bulkItems": [
+    {
+      "name": "alt",
+      "title": "Orb of Alteration",
+      "stackSize": 20
+    },
+    {
+      "name": "fuse",
+      "title": "Orb of Fusing",
+      "stackSize": 20
+    },
+    {
+      "name": "alch",
+      "title": "Orb of Alchemy",
+      "stackSize": 10
+    },
+    {
+      "name": "chaos",
+      "title": "Chaos Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "gcp",
+      "title": "Gemcutter's Prism",
+      "stackSize": 20
+    },
+    {
+      "name": "exa",
+      "title": "Exalted Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "chrom",
+      "title": "Chromatic Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "jew",
+      "title": "Jeweller's Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "engineers-orb",
+      "title": "Engineer's Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "chance",
+      "title": "Orb of Chance",
+      "stackSize": 20
+    },
+    {
+      "name": "chisel",
+      "title": "Cartographer's Chisel",
+      "stackSize": 20
+    },
+    {
+      "name": "scour",
+      "title": "Orb of Scouring",
+      "stackSize": 30
+    },
+    {
+      "name": "blessed",
+      "title": "Blessed Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "regret",
+      "title": "Orb of Regret",
+      "stackSize": 40
+    },
+    {
+      "name": "regal",
+      "title": "Regal Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "divine",
+      "title": "Divine Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "vaal",
+      "title": "Vaal Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "orb-of-annulment",
+      "title": "Orb of Annulment",
+      "stackSize": 20
+    },
+    {
+      "name": "orb-of-binding",
+      "title": "Orb of Binding",
+      "stackSize": 20
+    },
+    {
+      "name": "ancient-orb",
+      "title": "Ancient Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "orb-of-horizons",
+      "title": "Orb of Horizons",
+      "stackSize": 20
+    },
+    {
+      "name": "harbingers-orb",
+      "title": "Harbinger's Orb",
+      "stackSize": 20
+    },
+    {
+      "name": "wis",
+      "title": "Scroll of Wisdom",
+      "stackSize": 40
+    },
+    {
+      "name": "port",
+      "title": "Portal Scroll",
+      "stackSize": 40
+    },
+    {
+      "name": "scr",
+      "title": "Armourer's Scrap",
+      "stackSize": 40
+    },
+    {
+      "name": "whe",
+      "title": "Blacksmith's Whetstone",
+      "stackSize": 20
+    },
+    {
+      "name": "ba",
+      "title": "Glassblower's Bauble",
+      "stackSize": 20
+    },
+    {
+      "name": "tra",
+      "title": "Orb of Transmutation",
+      "stackSize": 40
+    },
+    {
+      "name": "aug",
+      "title": "Orb of Augmentation",
+      "stackSize": 30
+    },
+    {
+      "name": "mir",
+      "title": "Mirror of Kalandra",
+      "stackSize": 10
+    },
+    {
+      "name": "ete",
+      "title": "Eternal Orb",
+      "stackSize": 10
+    },
+    {
+      "name": "p",
+      "title": "Perandus Coin",
+      "stackSize": 1000
+    },
+    {
+      "name": "silver",
+      "title": "Silver Coin",
+      "stackSize": 30
+    },
+    {
+      "name": "apprentice-sextant",
+      "title": "Simple Sextant",
+      "stackSize": 10
+    },
+    {
+      "name": "journeyman-sextant",
+      "title": "Prime Sextant",
+      "stackSize": 10
+    },
+    {
+      "name": "master-sextant",
+      "title": "Awakened Sextant",
+      "stackSize": 10
+    },
+    {
+      "name": "stacked-deck",
+      "title": "Stacked Deck",
+      "stackSize": 10
+    }
+  ]
+}

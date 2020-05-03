@@ -1,24 +1,23 @@
 ## Path of Exile Arbitrage
 
 CLI tool to detect arbitrage opportunities by taking advantage of inefficient
-bid-ask spreads in the [Bulk Item Exchange](https://www.pathofexile.com/trade).
-This tool relies on the unofficial POE exchange API.
+bid-ask spreads in the [Bulk Item Exchange](https://www.pathofexile.com/trade/exchange).
+This tool relies on the exchange API which is not officially supported by GGG.
 
-Given `N` currencies, `poe-arbitrage` makes `2 * (N choose 2)` number of API calls
-to determine possible trading opportunities. `N choose 2` is the number of unique
-currency pairs. Often it is more profitable to trade to an intermediate
-currency rather than trading two currencies directly.
+## Installation
 
-Some suggestions to cut down the number of API calls is selecting popular
-currencies with a high stack size and high innate value. Since users may be
-unresponsive, its important to choose currencies that you do not mind holding
-for extended periods of time.
+A pre-built Windows 64-bit executable can be found under releases.
+
+You can also build an executable directly by installing Go, cloning the repo
+and running `go build poe-arbitrage`. Additional documentation can be found
+[here](https://golang.org/cmd/go/#hdr-Compile_packages_and_dependencies).
 
 ## Feature
 
-- Detect opportunities with a minimum of `N` online users.
+- Detect opportunities with a minimum of `N` online users for intermediate and
+  final transactions.
   - Decreases potential transaction costs and opportunity costs of holding
-    non-liquid currencies.
+    non-liquid items.
   - Optional AFK filter
 - Detect opportunities with a minimum of `N` profit (dependent on trading pair)
 - Set initial capital via JSON/CLI
@@ -31,27 +30,38 @@ for extended periods of time.
 ## Usage
 
 ```sh
-# List currencies
-poe-arbitrage currencies
+# List all supported bulk items
+poe-arbitrage list
 
-# Check for opportunities when trading Chaos Orbs or Exalt Orbs
-poe-arbitrage check --currencies chaos,exa
+# List bulk items with name containing "orb of" (case insensitive)
+poe-arbitrage list --name "orb of"
+
+# Check for opportunities when trading Chaos Orbs or Exalt Orbs (at least 2 item)
+poe-arbitrage trade --items chaos,exa
 
 # Check for opportunities in the current hardcore league
-poe-arbitrage check --currencies chaos,exa --hard
+poe-arbitrage trade --items chaos,exa,gcp --hardcore
 
-# Check for opportunities with profit of 5 Chaos
-poe-arbitrage check --profit "5 chaos"
-
-# Check for opportunities and fetch latest numbers
-poe-arbitrage check --currencies chaos,exa --latest
+# Check for opportunities with 100 Chaos, 0 Exalts and 20 GCPs
+poe-arbitrage trade --items chaos,exa,gcp --capital 100,0,20
 ```
+
+Given `N` items, `arbitrage` makes `2 * (N choose 2)` number of API calls
+to determine possible trading opportunities. `N choose 2` is the number of unique
+currency pairs. Often it is more profitable to trade to an intermediate
+currency rather than trading two curreitemsirectly.
+
+Some suggestions to cut down the number of API calls is selecting popular
+items with a high stack size and high innate value. Since users may be
+unresponsive, its important to choose items that you do not mind holding
+for extended periods of time.
 
 ## Open Questions
 
 - How will the stack size affect trades?
-  - i.e. Exalt Orb for Chaos Orb where one trade window is not big enough.
+  - Example: Exalt Orbs for Chaos Orbs where one trade is not enough.
   - Current limiting trades to `5 * 12 * stack size`
 - What are the API rate limits for POE exchange API?
-- Should the same user be traded with multiple times?
-- Profitability of flipping inefficiently priced items or gems.
+- Profitability of flipping inefficiently priced items.
+  - Price rare items via ML.
+  - Flipping via vendor recipes (e.g. quality gems or higher tier essences)
