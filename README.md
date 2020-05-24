@@ -32,14 +32,23 @@ poe-arbitrage list
 # List bulk items with name containing "orb of" (case insensitive)
 poe-arbitrage list --name "orb of"
 
-# Check for opportunities when trading Chaos Orbs or Exalt Orbs (at least 2 item)
-poe-arbitrage trade --items chaos,exa
+# Check for opportunities when trading Chaos Orbs or Exalt Orbs (at least 2 items)
+poe-arbitrage trade chaos exa
 
 # Check for opportunities in the current hardcore league
-poe-arbitrage trade --items chaos,exa,gcp --hardcore
+poe-arbitrage trade chaos exa gcp
 
 # Check for opportunities with 100 Chaos, 0 Exalts and 20 GCPs
-poe-arbitrage trade --items chaos,exa,gcp --capital 100,0,20
+poe-arbitrage trade chaos exa gcp --capital chaos=100,gcp=20
+
+# Configure the CLI behavior via CLI
+# The config is stored as JSON locally and can be manually edited.
+poe-arbitrage configure --league Standard
+poe-arbitrage configure --hardcore false
+poe-arbitrage configure --exclude-afk true
+poe-arbitrage configure --ignore-player ABC
+poe-arbitrage configure --favorite-player XYZ
+poe-arbitrage configure --add-item "golden-oil,Golden Oil,10"
 ```
 
 Given `N` items, CLI makes `2 * (N choose 2)` number of API calls

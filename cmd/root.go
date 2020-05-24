@@ -8,11 +8,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
-var initialConfig = "https://raw.githubusercontent.com/t73liu/poe-arbitrage/master/default-config.json"
-var defaultConfigFileName = "poe-arbitrage.json"
+const initialConfig = "https://raw.githubusercontent.com/t73liu/poe-arbitrage/master/default-config.json"
+const defaultConfigFileName = "poe-arbitrage.json"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -28,9 +29,9 @@ and is subject to its rate-limits.
 }
 
 type BulkItem struct {
-	Key       string `json:"key"`
+	Id        string `json:"id"`
 	Name      string `json:"name"`
-	StackSize uint8  `json:"stackSize"`
+	StackSize uint16 `json:"stackSize"`
 }
 
 type Config struct {
@@ -65,50 +66,62 @@ func initConfig() {
 	viper.AutomaticEnv()
 	viper.SetConfigType("json")
 
-	customConfigFile := viper.GetString("POE_ARBITRAGE_CONFIG")
-	isCustomConfig := customConfigFile != ""
-	defaultConfigFilePath := filepath.Join(home, defaultConfigFileName)
+	customConfigFile := strings.TrimSpace(viper.GetString("POE_ARBITRAGE_CONFIG"))
 
-	if isCustomConfig {
+	if customConfigFile != "" {
 		viper.SetConfigFile(customConfigFile)
+		if err := viper.ReadInConfig(); err != nil {
+			fmt.Println("Could not open config file:", err)
+			os.Exit(1)
+		}
 	} else {
+		defaultConfigFilePath := filepath.Join(home, defaultConfigFileName)
 		viper.SetConfigFile(defaultConfigFilePath)
-	}
 
-	err = viper.ReadInConfig()
-	if err == nil {
+		if fileExists(defaultConfigFilePath) {
+			if err := viper.ReadInConfig(); err != nil {
+				fmt.Println("Could not open config file", err)
+				os.Exit(1)
+			}
+		} else {
+			fmt.Println("Initializing default config file:", defaultConfigFilePath)
+			client := http.Client{
+				Timeout: 10 * time.Second,
+				Transport: &http.Transport{
+					TLSHandshakeTimeout: 5 * time.Second,
+				},
+			}
+
+			resp, err := client.Get(initialConfig)
+			if err != nil {
+				fmt.Println("Unable to download default config", err)
+				os.Exit(1)
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode != http.StatusOK {
+				fmt.Println("Unable to download default config", resp.Status)
+				os.Exit(1)
+			}
+
+			if err := viper.ReadConfig(resp.Body); err != nil {
+				fmt.Println("Unable to read the default config", err)
+				os.Exit(1)
+			}
+
+			if err := viper.WriteConfig(); err != nil {
+				fmt.Println("Unable to create default config", err)
+				os.Exit(1)
+			}
+		}
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else if isCustomConfig {
-		fmt.Println("Could not find config file:", customConfigFile)
-	} else {
-		fmt.Println("Initializing default config file:", defaultConfigFilePath)
-		client := &http.Client{
-			Timeout: 10 * time.Second,
-			Transport: &http.Transport{
-				TLSHandshakeTimeout: 5 * time.Second,
-			},
-		}
-
-		resp, err := client.Get(initialConfig)
-		if err != nil {
-			fmt.Println("Unable to download default config", err)
-			os.Exit(1)
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode != http.StatusOK {
-			fmt.Println("Unable to download default config", resp.Status)
-			os.Exit(1)
-		}
-
-		if err := viper.ReadConfig(resp.Body); err != nil {
-			fmt.Println("Unable to read the default config", err)
-			os.Exit(1)
-		}
-
-		if err := viper.WriteConfig(); err != nil {
-			fmt.Println("Unable to create default config", err)
-			os.Exit(1)
-		}
 	}
+}
+
+func fileExists(path string) bool {
+	fileInfo, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !fileInfo.IsDir()
 }

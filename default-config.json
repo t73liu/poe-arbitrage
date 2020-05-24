@@ -6,187 +6,187 @@
   "favoritePlayers": [],
   "bulkItems": {
     "alt": {
-      "key": "alt",
+      "id": "alt",
       "name": "Orb of Alteration",
       "stackSize": 20
     },
     "fuse": {
-      "key": "fuse",
+      "id": "fuse",
       "name": "Orb of Fusing",
       "stackSize": 20
     },
     "alch": {
-      "key": "alch",
+      "id": "alch",
       "name": "Orb of Alchemy",
       "stackSize": 10
     },
     "chaos": {
-      "key": "chaos",
+      "id": "chaos",
       "name": "Chaos Orb",
       "stackSize": 10
     },
     "gcp": {
-      "key": "gcp",
+      "id": "gcp",
       "name": "Gemcutter's Prism",
       "stackSize": 20
     },
     "exa": {
-      "key": "exa",
+      "id": "exa",
       "name": "Exalted Orb",
       "stackSize": 10
     },
     "chrom": {
-      "key": "chrom",
+      "id": "chrom",
       "name": "Chromatic Orb",
       "stackSize": 20
     },
     "jew": {
-      "key": "jew",
+      "id": "jew",
       "name": "Jeweller's Orb",
       "stackSize": 20
     },
     "engineers-orb": {
-      "key": "engineers-orb",
+      "id": "engineers-orb",
       "name": "Engineer's Orb",
       "stackSize": 20
     },
     "chance": {
-      "key": "chance",
+      "id": "chance",
       "name": "Orb of Chance",
       "stackSize": 20
     },
     "chisel": {
-      "key": "chisel",
+      "id": "chisel",
       "name": "Cartographer's Chisel",
       "stackSize": 20
     },
     "scour": {
-      "key": "scour",
+      "id": "scour",
       "name": "Orb of Scouring",
       "stackSize": 30
     },
     "blessed": {
-      "key": "blessed",
+      "id": "blessed",
       "name": "Blessed Orb",
       "stackSize": 20
     },
     "regret": {
-      "key": "regret",
+      "id": "regret",
       "name": "Orb of Regret",
       "stackSize": 40
     },
     "regal": {
-      "key": "regal",
+      "id": "regal",
       "name": "Regal Orb",
       "stackSize": 10
     },
     "divine": {
-      "key": "divine",
+      "id": "divine",
       "name": "Divine Orb",
       "stackSize": 10
     },
     "vaal": {
-      "key": "vaal",
+      "id": "vaal",
       "name": "Vaal Orb",
       "stackSize": 10
     },
     "orb-of-annulment": {
-      "key": "orb-of-annulment",
+      "id": "orb-of-annulment",
       "name": "Orb of Annulment",
       "stackSize": 20
     },
     "orb-of-binding": {
-      "key": "orb-of-binding",
+      "id": "orb-of-binding",
       "name": "Orb of Binding",
       "stackSize": 20
     },
     "ancient-orb": {
-      "key": "ancient-orb",
+      "id": "ancient-orb",
       "name": "Ancient Orb",
       "stackSize": 20
     },
     "orb-of-horizons": {
-      "key": "orb-of-horizons",
+      "id": "orb-of-horizons",
       "name": "Orb of Horizons",
       "stackSize": 20
     },
     "harbingers-orb": {
-      "key": "harbingers-orb",
+      "id": "harbingers-orb",
       "name": "Harbinger's Orb",
       "stackSize": 20
     },
     "wis": {
-      "key": "wis",
+      "id": "wis",
       "name": "Scroll of Wisdom",
       "stackSize": 40
     },
     "port": {
-      "key": "port",
+      "id": "port",
       "name": "Portal Scroll",
       "stackSize": 40
     },
     "scr": {
-      "key": "scr",
+      "id": "scr",
       "name": "Armourer's Scrap",
       "stackSize": 40
     },
     "whe": {
-      "key": "whe",
+      "id": "whe",
       "name": "Blacksmith's Whetstone",
       "stackSize": 20
     },
     "ba": {
-      "key": "ba",
+      "id": "ba",
       "name": "Glassblower's Bauble",
       "stackSize": 20
     },
     "tra": {
-      "key": "tra",
+      "id": "tra",
       "name": "Orb of Transmutation",
       "stackSize": 40
     },
     "aug": {
-      "key": "aug",
+      "id": "aug",
       "name": "Orb of Augmentation",
       "stackSize": 30
     },
     "mir": {
-      "key": "mir",
+      "id": "mir",
       "name": "Mirror of Kalandra",
       "stackSize": 10
     },
     "ete": {
-      "key": "ete",
+      "id": "ete",
       "name": "Eternal Orb",
       "stackSize": 10
     },
     "p": {
-      "key": "p",
+      "id": "p",
       "name": "Perandus Coin",
       "stackSize": 1000
     },
     "silver": {
-      "key": "silver",
+      "id": "silver",
       "name": "Silver Coin",
       "stackSize": 30
     },
     "apprentice-sextant": {
-      "key": "apprentice-sextant",
+      "id": "apprentice-sextant",
       "name": "Simple Sextant",
       "stackSize": 10
     },
     "journeyman-sextant": {
-      "key": "journeyman-sextant",
+      "id": "journeyman-sextant",
       "name": "Prime Sextant",
       "stackSize": 10
     },
     "master-sextant": {
-      "key": "master-sextant",
+      "id": "master-sextant",
       "name": "Awakened Sextant",
       "stackSize": 10
     },
     "stacked-deck": {
-      "key": "stacked-deck",
+      "id": "stacked-deck",
       "name": "Stacked Deck",
       "stackSize": 10
     }
