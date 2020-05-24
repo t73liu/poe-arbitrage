@@ -1,196 +1,194 @@
 {
   "league": "Delirium",
   "hardcore": false,
-  "includeAFK": false,
-  "players": {
-    "favorite": [],
-    "ignored": []
-  },
-  "bulkItems": [
-    {
-      "name": "alt",
-      "title": "Orb of Alteration",
+  "excludeAFK": true,
+  "ignoredPlayers": [],
+  "favoritePlayers": [],
+  "bulkItems": {
+    "alt": {
+      "key": "alt",
+      "name": "Orb of Alteration",
       "stackSize": 20
     },
-    {
-      "name": "fuse",
-      "title": "Orb of Fusing",
+    "fuse": {
+      "key": "fuse",
+      "name": "Orb of Fusing",
       "stackSize": 20
     },
-    {
-      "name": "alch",
-      "title": "Orb of Alchemy",
+    "alch": {
+      "key": "alch",
+      "name": "Orb of Alchemy",
       "stackSize": 10
     },
-    {
-      "name": "chaos",
-      "title": "Chaos Orb",
+    "chaos": {
+      "key": "chaos",
+      "name": "Chaos Orb",
       "stackSize": 10
     },
-    {
-      "name": "gcp",
-      "title": "Gemcutter's Prism",
+    "gcp": {
+      "key": "gcp",
+      "name": "Gemcutter's Prism",
       "stackSize": 20
     },
-    {
-      "name": "exa",
-      "title": "Exalted Orb",
+    "exa": {
+      "key": "exa",
+      "name": "Exalted Orb",
       "stackSize": 10
     },
-    {
-      "name": "chrom",
-      "title": "Chromatic Orb",
+    "chrom": {
+      "key": "chrom",
+      "name": "Chromatic Orb",
       "stackSize": 20
     },
-    {
-      "name": "jew",
-      "title": "Jeweller's Orb",
+    "jew": {
+      "key": "jew",
+      "name": "Jeweller's Orb",
       "stackSize": 20
     },
-    {
-      "name": "engineers-orb",
-      "title": "Engineer's Orb",
+    "engineers-orb": {
+      "key": "engineers-orb",
+      "name": "Engineer's Orb",
       "stackSize": 20
     },
-    {
-      "name": "chance",
-      "title": "Orb of Chance",
+    "chance": {
+      "key": "chance",
+      "name": "Orb of Chance",
       "stackSize": 20
     },
-    {
-      "name": "chisel",
-      "title": "Cartographer's Chisel",
+    "chisel": {
+      "key": "chisel",
+      "name": "Cartographer's Chisel",
       "stackSize": 20
     },
-    {
-      "name": "scour",
-      "title": "Orb of Scouring",
+    "scour": {
+      "key": "scour",
+      "name": "Orb of Scouring",
       "stackSize": 30
     },
-    {
-      "name": "blessed",
-      "title": "Blessed Orb",
+    "blessed": {
+      "key": "blessed",
+      "name": "Blessed Orb",
       "stackSize": 20
     },
-    {
-      "name": "regret",
-      "title": "Orb of Regret",
+    "regret": {
+      "key": "regret",
+      "name": "Orb of Regret",
       "stackSize": 40
     },
-    {
-      "name": "regal",
-      "title": "Regal Orb",
+    "regal": {
+      "key": "regal",
+      "name": "Regal Orb",
       "stackSize": 10
     },
-    {
-      "name": "divine",
-      "title": "Divine Orb",
+    "divine": {
+      "key": "divine",
+      "name": "Divine Orb",
       "stackSize": 10
     },
-    {
-      "name": "vaal",
-      "title": "Vaal Orb",
+    "vaal": {
+      "key": "vaal",
+      "name": "Vaal Orb",
       "stackSize": 10
     },
-    {
-      "name": "orb-of-annulment",
-      "title": "Orb of Annulment",
+    "orb-of-annulment": {
+      "key": "orb-of-annulment",
+      "name": "Orb of Annulment",
       "stackSize": 20
     },
-    {
-      "name": "orb-of-binding",
-      "title": "Orb of Binding",
+    "orb-of-binding": {
+      "key": "orb-of-binding",
+      "name": "Orb of Binding",
       "stackSize": 20
     },
-    {
-      "name": "ancient-orb",
-      "title": "Ancient Orb",
+    "ancient-orb": {
+      "key": "ancient-orb",
+      "name": "Ancient Orb",
       "stackSize": 20
     },
-    {
-      "name": "orb-of-horizons",
-      "title": "Orb of Horizons",
+    "orb-of-horizons": {
+      "key": "orb-of-horizons",
+      "name": "Orb of Horizons",
       "stackSize": 20
     },
-    {
-      "name": "harbingers-orb",
-      "title": "Harbinger's Orb",
+    "harbingers-orb": {
+      "key": "harbingers-orb",
+      "name": "Harbinger's Orb",
       "stackSize": 20
     },
-    {
-      "name": "wis",
-      "title": "Scroll of Wisdom",
+    "wis": {
+      "key": "wis",
+      "name": "Scroll of Wisdom",
       "stackSize": 40
     },
-    {
-      "name": "port",
-      "title": "Portal Scroll",
+    "port": {
+      "key": "port",
+      "name": "Portal Scroll",
       "stackSize": 40
     },
-    {
-      "name": "scr",
-      "title": "Armourer's Scrap",
+    "scr": {
+      "key": "scr",
+      "name": "Armourer's Scrap",
       "stackSize": 40
     },
-    {
-      "name": "whe",
-      "title": "Blacksmith's Whetstone",
+    "whe": {
+      "key": "whe",
+      "name": "Blacksmith's Whetstone",
       "stackSize": 20
     },
-    {
-      "name": "ba",
-      "title": "Glassblower's Bauble",
+    "ba": {
+      "key": "ba",
+      "name": "Glassblower's Bauble",
       "stackSize": 20
     },
-    {
-      "name": "tra",
-      "title": "Orb of Transmutation",
+    "tra": {
+      "key": "tra",
+      "name": "Orb of Transmutation",
       "stackSize": 40
     },
-    {
-      "name": "aug",
-      "title": "Orb of Augmentation",
+    "aug": {
+      "key": "aug",
+      "name": "Orb of Augmentation",
       "stackSize": 30
     },
-    {
-      "name": "mir",
-      "title": "Mirror of Kalandra",
+    "mir": {
+      "key": "mir",
+      "name": "Mirror of Kalandra",
       "stackSize": 10
     },
-    {
-      "name": "ete",
-      "title": "Eternal Orb",
+    "ete": {
+      "key": "ete",
+      "name": "Eternal Orb",
       "stackSize": 10
     },
-    {
-      "name": "p",
-      "title": "Perandus Coin",
+    "p": {
+      "key": "p",
+      "name": "Perandus Coin",
       "stackSize": 1000
     },
-    {
-      "name": "silver",
-      "title": "Silver Coin",
+    "silver": {
+      "key": "silver",
+      "name": "Silver Coin",
       "stackSize": 30
     },
-    {
-      "name": "apprentice-sextant",
-      "title": "Simple Sextant",
+    "apprentice-sextant": {
+      "key": "apprentice-sextant",
+      "name": "Simple Sextant",
       "stackSize": 10
     },
-    {
-      "name": "journeyman-sextant",
-      "title": "Prime Sextant",
+    "journeyman-sextant": {
+      "key": "journeyman-sextant",
+      "name": "Prime Sextant",
       "stackSize": 10
     },
-    {
-      "name": "master-sextant",
-      "title": "Awakened Sextant",
+    "master-sextant": {
+      "key": "master-sextant",
+      "name": "Awakened Sextant",
       "stackSize": 10
     },
-    {
-      "name": "stacked-deck",
-      "title": "Stacked Deck",
+    "stacked-deck": {
+      "key": "stacked-deck",
+      "name": "Stacked Deck",
       "stackSize": 10
     }
-  ]
+  }
 }

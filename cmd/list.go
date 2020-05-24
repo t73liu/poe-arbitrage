@@ -3,33 +3,44 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"os"
+	"strings"
 )
 
-// listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "List supported bulk items.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+		name, err := cmd.Flags().GetString("name")
+		if err != nil {
+			fmt.Println("Failed to retrieve --name value", err)
+			os.Exit(1)
+		}
+
+		var config Config
+		if err := viper.Unmarshal(&config); err != nil {
+			fmt.Println("Failed to parse config", err)
+			os.Exit(1)
+		}
+
+		trimmedSubstring := strings.ToLower(strings.TrimSpace(name))
+		for _, item := range config.BulkItems {
+			itemName := strings.ToLower(item.Name)
+			if trimmedSubstring == "" || strings.Contains(itemName, trimmedSubstring) {
+				fmt.Printf("%+v\n", item)
+			}
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// lsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// lsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	listCmd.Flags().StringP(
+		"name",
+		"n",
+		"",
+		"List items containing the provided string (case insensitive)",
+	)
 }

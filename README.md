@@ -18,14 +18,10 @@ and running `go build poe-arbitrage`. Additional documentation can be found
   final transactions.
   - Decreases potential transaction costs and opportunity costs of holding
     non-liquid items.
-  - Optional AFK filter
+  - Exclude AFK users by default
 - Detect opportunities with a minimum of `N` profit (dependent on trading pair)
-- Set initial capital via JSON/CLI
-- Limit trade pairs via JSON/CLI
-- Limit per trade volume via JSON/CLI
-- Blacklist users
-- Print out whispers for valid routes
-- Print out rate limits
+- Ignore/favorite users
+- Print whispers for profitable trades
 
 ## Usage
 
@@ -46,10 +42,10 @@ poe-arbitrage trade --items chaos,exa,gcp --hardcore
 poe-arbitrage trade --items chaos,exa,gcp --capital 100,0,20
 ```
 
-Given `N` items, `arbitrage` makes `2 * (N choose 2)` number of API calls
+Given `N` items, CLI makes `2 * (N choose 2)` number of API calls
 to determine possible trading opportunities. `N choose 2` is the number of unique
-currency pairs. Often it is more profitable to trade to an intermediate
-currency rather than trading two curreitemsirectly.
+trading pairs. Often it is more profitable to trade to an intermediate
+item rather than trading two items directly.
 
 Some suggestions to cut down the number of API calls is selecting popular
 items with a high stack size and high innate value. Since users may be

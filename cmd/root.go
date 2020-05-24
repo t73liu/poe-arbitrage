@@ -19,10 +19,27 @@ var rootCmd = &cobra.Command{
 	Use:   "poe-arbitrage",
 	Short: "poe-arbitrage checks for bulk trading opportunities",
 	Long: `
-POE Arbitrage is a CLI that checks for inefficient bid-ask spreads for
-bulk-item trades. It relies on the official POE Bulk Item Exchange
-(https://www.pathofexile.com/trade/exchange) and is subject to rate-limits.
+poe-arbitrage is a CLI that checks for inefficient bid-ask
+spreads for bulk-item trades. It relies on the official PoE
+Bulk Item Exchange (https://www.pathofexile.com/trade/exchange)
+and is subject to its rate-limits.
 `,
+	Version: "1.0.0",
+}
+
+type BulkItem struct {
+	Key       string `json:"key"`
+	Name      string `json:"name"`
+	StackSize uint8  `json:"stackSize"`
+}
+
+type Config struct {
+	League          string              `json:"league"`
+	Hardcore        bool                `json:"hardcore"`
+	ExcludeAFK      bool                `json:"excludeAFK"`
+	IgnoredPlayers  []string            `json:"ignoredPlayers"`
+	FavoritePlayers []string            `json:"favoritePlayers"`
+	BulkItems       map[string]BulkItem `json:"bulkItems"`
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -36,28 +53,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-	//rootCmd.PersistentFlags().StringVar(
-	//  &cfgFile,
-	//  "config",
-	//  "",
-	//  fmt.Sprintf(
-	//    "config file (default is $HOME%s)",
-	//    string(filepath.Separator) + defaultConfigFile,
-	//  ),
-	//)
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	//rootCmd.Flags().BoolP(
-	//  "toggle",
-	//  "t",
-	//  false,
-	//  "Help message for toggle",
-	//)
 }
 
 func initConfig() {
@@ -95,12 +90,11 @@ func initConfig() {
 		}
 
 		resp, err := client.Get(initialConfig)
-		defer resp.Body.Close()
-
 		if err != nil {
 			fmt.Println("Unable to download default config", err)
 			os.Exit(1)
 		}
+		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
 			fmt.Println("Unable to download default config", resp.Status)
