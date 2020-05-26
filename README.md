@@ -48,7 +48,7 @@ poe-arbitrage configure --hardcore false
 poe-arbitrage configure --exclude-afk true
 poe-arbitrage configure --ignore-player ABC
 poe-arbitrage configure --favorite-player XYZ
-poe-arbitrage configure --add-item "golden-oil,Golden Oil,10"
+poe-arbitrage configure --set-item "golden-oil,Golden Oil,10"
 ```
 
 Given `N` items, CLI makes `2 * (N choose 2)` number of API calls
