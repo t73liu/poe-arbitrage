@@ -138,9 +138,12 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 				return err
 			}
 
-			if err := tradingPaths.Set(initialItem, currItem, tradeDetails); err != nil {
-				fmt.Println(err)
-				return err
+			tradeDetails = filterTradeDetails(tradeDetails, config)
+			if len(*tradeDetails) > 0 {
+				if err := tradingPaths.Set(initialItem, currItem, tradeDetails); err != nil {
+					fmt.Println(err)
+					return err
+				}
 			}
 		}
 	}
@@ -151,4 +154,24 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 	}
 
 	return nil
+}
+
+func filterTradeDetails(tradeDetails *[]api.TradeDetail, config Config) *[]api.TradeDetail {
+	filteredTrades := make([]api.TradeDetail, 0, len(*tradeDetails))
+	for _, trade := range *tradeDetails {
+		account := trade.Listing.Account
+		if config.ExcludeAFK && account.Online.Status == "afk" {
+			continue
+		}
+		if utils.Contains(config.IgnoredPlayers, account.Name) {
+			continue
+		}
+		filteredTrades = append(filteredTrades, trade)
+	}
+	return &filteredTrades
+}
+
+// TODO order by price, favorite, last active
+func sortTradeDetails(tradeDetails *[]api.TradeDetail, config Config) *[]api.TradeDetail {
+	return tradeDetails
 }

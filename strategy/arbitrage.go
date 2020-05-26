@@ -57,7 +57,12 @@ func (tp *TradingPaths) Get(initialItem, targetItem string) *[]api.TradeDetail {
 }
 
 // TODO analyze profitable trading paths given initial capital constraints
-func (tp *TradingPaths) Analyze(capital map[string]int) error {
+func (tp *TradingPaths) Analyze(initialCapital map[string]int) error {
 	fmt.Printf("%+v\n", tp)
+	// Filter out invalid starting trades based on capital
+	// Find valid trading pairs via ItemTradingPairs
+	// initial trade can be dependent on one player
+	// subsequent trades should require multiple players as backup
+	// Check if "cycle" (typically a cycle requires 3 nodes) is lucrative
 	return nil
 }
