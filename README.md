@@ -51,9 +51,9 @@ poe-arbitrage configure --favorite-player XYZ
 poe-arbitrage configure --set-item "golden-oil,Golden Oil,10"
 ```
 
-Given `N` items, CLI makes `2 * (N choose 2)` number of API calls
-to determine possible trading opportunities. `N choose 2` is the number of unique
-trading pairs. Often it is more profitable to trade to an intermediate
+Given `N` items, CLI makes `2 * N!/(N-2)!` number of API calls to determine
+possible trading opportunities. `N!/(N-2)!` is the number of trading pairs
+(order matters). Often it is more profitable to trade to an intermediate
 item rather than trading two items directly.
 
 Some suggestions to cut down the number of API calls is selecting popular
