@@ -14,7 +14,7 @@ import (
 
 var tradeCmd = &cobra.Command{
 	Use:   "trade",
-	Short: "Check for trading opportunities for bulk items.",
+	Short: "Check for trading opportunities for bulk items",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 2 {
 			return errors.New("provide at least 2 items")
@@ -26,7 +26,7 @@ var tradeCmd = &cobra.Command{
 
 		initialCapital, err := cmd.Flags().GetStringToInt("capital")
 		if err != nil {
-			fmt.Println("Could not parse --capital argument", err)
+			fmt.Println("Could not parse --capital argument:", err)
 			return err
 		}
 
@@ -44,13 +44,13 @@ var tradeCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, items []string) error {
 		initialCapital, err := cmd.Flags().GetStringToInt("capital")
 		if err != nil {
-			fmt.Println("Could not parse --capital argument", err)
+			fmt.Println("Could not parse --capital argument:", err)
 			return err
 		}
 
 		var config Config
 		if err := viper.Unmarshal(&config); err != nil {
-			fmt.Println("Failed to parse config", err)
+			fmt.Println("Failed to parse config:", err)
 			return err
 		}
 
@@ -125,7 +125,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 
 			bulkTrades, err := exchangeClient.GetBulkTrades(initialItem, currItem, 1)
 			if err != nil {
-				fmt.Println("Unable to fetch bulk trades", err)
+				fmt.Println("Unable to fetch bulk trades:", err)
 				return err
 			}
 
@@ -134,7 +134,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 				utils.Limit(bulkTrades.TradeIds, 20),
 			)
 			if err != nil {
-				fmt.Println("Unable to fetch trade details", err)
+				fmt.Println("Unable to fetch trade details:", err)
 				return err
 			}
 
@@ -149,7 +149,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 	}
 
 	if err := tradingPaths.Analyze(capital); err != nil {
-		fmt.Println("Unable to analyze bulk trades", err)
+		fmt.Println("Unable to analyze bulk trades:", err)
 		return err
 	}
 

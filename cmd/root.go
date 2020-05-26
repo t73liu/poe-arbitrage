@@ -97,7 +97,7 @@ func initConfigE() error {
 
 		if utils.FileExists(defaultConfigFilePath) {
 			if err := viper.ReadInConfig(); err != nil {
-				fmt.Println("Could not open config file", err)
+				fmt.Println("Could not open config file:", err)
 				return err
 			}
 		} else {
@@ -111,23 +111,23 @@ func initConfigE() error {
 
 			resp, err := client.Get(initialConfig)
 			if err != nil {
-				fmt.Println("Unable to download default config", err)
+				fmt.Println("Unable to download default config:", err)
 				return err
 			}
 			defer resp.Body.Close()
 
 			if resp.StatusCode != http.StatusOK {
-				fmt.Println("Unable to download default config", resp.Status)
+				fmt.Println("Unable to download default config:", resp.Status)
 				return err
 			}
 
 			if err := viper.ReadConfig(resp.Body); err != nil {
-				fmt.Println("Unable to read the default config", err)
+				fmt.Println("Unable to read the default config:", err)
 				return err
 			}
 
 			if err := viper.WriteConfig(); err != nil {
-				fmt.Println("Unable to create default config", err)
+				fmt.Println("Unable to create default config:", err)
 				return err
 			}
 		}

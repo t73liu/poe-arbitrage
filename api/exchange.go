@@ -100,6 +100,7 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) 
 	return &bulkTrades, nil
 }
 
+// TODO simplify data model
 func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDetail, error) {
 	var tradeDetails []TradeDetail
 	if len(tradeIds) == 0 {

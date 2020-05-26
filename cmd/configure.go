@@ -24,7 +24,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var config Config
 		if err := viper.Unmarshal(&config); err != nil {
-			fmt.Println("Failed to parse config", err)
+			fmt.Println("Failed to parse config:", err)
 			return err
 		}
 
@@ -32,7 +32,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if leagueUpdated {
 			league, err := cmd.Flags().GetString("league")
 			if err != nil {
-				fmt.Println("Failed to parse --league", err)
+				fmt.Println("Failed to parse --league:", err)
 				return err
 			}
 			league = strings.TrimSpace(league)
@@ -46,7 +46,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if hardcoreUpdated {
 			hardcore, err := cmd.Flags().GetBool("hardcore")
 			if err != nil {
-				fmt.Println("Failed to parse --hardcore", err)
+				fmt.Println("Failed to parse --hardcore:", err)
 				return err
 			}
 			config.Hardcore = hardcore
@@ -56,7 +56,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if excludeAFKUpdated {
 			excludeAFK, err := cmd.Flags().GetBool("exclude-afk")
 			if err != nil {
-				fmt.Println("Failed to parse --exclude-afk", err)
+				fmt.Println("Failed to parse --exclude-afk:", err)
 				return err
 			}
 			config.ExcludeAFK = excludeAFK
@@ -66,7 +66,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if ignorePlayerUpdated {
 			ignoredPlayer, err := cmd.Flags().GetString("ignore-player")
 			if err != nil {
-				fmt.Println("Failed to parse --ignore-player", err)
+				fmt.Println("Failed to parse --ignore-player:", err)
 				return err
 			}
 			ignoredPlayer = strings.TrimSpace(ignoredPlayer)
@@ -83,7 +83,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if favoritePlayerUpdated {
 			favoritePlayer, err := cmd.Flags().GetString("favorite-player")
 			if err != nil {
-				fmt.Println("Failed to parse --favorite-player", err)
+				fmt.Println("Failed to parse --favorite-player:", err)
 				return err
 			}
 			favoritePlayer = strings.TrimSpace(favoritePlayer)
@@ -100,7 +100,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if bulkItemUpdated {
 			itemSlice, err := cmd.Flags().GetStringSlice("set-item")
 			if err != nil {
-				fmt.Println("Failed to parse --set-item", err)
+				fmt.Println("Failed to parse --set-item:", err)
 				return err
 			}
 
@@ -110,7 +110,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 
 			stackSize, err := strconv.Atoi(itemSlice[2])
 			if err != nil {
-				fmt.Println("Unable to parse stack size from item", err)
+				fmt.Println("Unable to parse stack size from item:", err)
 				return err
 			}
 
@@ -128,17 +128,17 @@ The default config location is "$HOME/poe-arbitrage.json".
 		if configUpdated {
 			jsonConfig, err := json.Marshal(config)
 			if err != nil {
-				fmt.Println("Unable to serialize the updated config", err)
+				fmt.Println("Unable to serialize the updated config:", err)
 				return err
 			}
 
 			if err := viper.ReadConfig(bytes.NewBuffer(jsonConfig)); err != nil {
-				fmt.Println("Unable to parse the updated config", err)
+				fmt.Println("Unable to parse the updated config:", err)
 				return err
 			}
 
 			if err := viper.WriteConfig(); err != nil {
-				fmt.Println("Unable to write the updated config", err)
+				fmt.Println("Unable to write the updated config:", err)
 				return err
 			}
 

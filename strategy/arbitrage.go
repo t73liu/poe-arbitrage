@@ -8,14 +8,14 @@ import (
 
 // Represents an adjacency list for a directed graph (potentially cyclic)
 type TradingPaths struct {
-	TradingPairTrades map[TradingPair][]api.TradeDetail
-	ItemTradingPairs  map[string][]TradingPair
+	tradingPairTrades map[TradingPair][]api.TradeDetail
+	itemTradingPairs  map[string][]TradingPair
 }
 
 func NewTradingPaths() *TradingPaths {
 	return &TradingPaths{
-		TradingPairTrades: make(map[TradingPair][]api.TradeDetail),
-		ItemTradingPairs:  make(map[string][]TradingPair),
+		tradingPairTrades: make(map[TradingPair][]api.TradeDetail),
+		itemTradingPairs:  make(map[string][]TradingPair),
 	}
 }
 
@@ -34,11 +34,11 @@ func (tp *TradingPaths) Set(initialItem, targetItem string, tradeDetails *[]api.
 		TargetItem:  targetItem,
 	}
 
-	if _, ok := tp.TradingPairTrades[tradingPair]; !ok {
-		tradingPairs, _ := tp.ItemTradingPairs[initialItem]
-		tp.ItemTradingPairs[initialItem] = append(tradingPairs, tradingPair)
+	if _, ok := tp.tradingPairTrades[tradingPair]; !ok {
+		tradingPairs, _ := tp.itemTradingPairs[initialItem]
+		tp.itemTradingPairs[initialItem] = append(tradingPairs, tradingPair)
 	}
-	tp.TradingPairTrades[tradingPair] = *tradeDetails
+	tp.tradingPairTrades[tradingPair] = *tradeDetails
 
 	return nil
 }
@@ -48,7 +48,7 @@ func (tp *TradingPaths) Get(initialItem, targetItem string) *[]api.TradeDetail {
 		InitialItem: initialItem,
 		TargetItem:  targetItem,
 	}
-	bulkTrades, ok := tp.TradingPairTrades[tradingPair]
+	bulkTrades, ok := tp.tradingPairTrades[tradingPair]
 	if ok {
 		return &bulkTrades
 	} else {
@@ -58,11 +58,25 @@ func (tp *TradingPaths) Get(initialItem, targetItem string) *[]api.TradeDetail {
 
 // TODO analyze profitable trading paths given initial capital constraints
 func (tp *TradingPaths) Analyze(initialCapital map[string]int) error {
-	fmt.Printf("%+v\n", tp)
+	for tradingPair, trades := range tp.tradingPairTrades {
+		fmt.Printf("%+v\n", tradingPair)
+		printTradeDetail(trades[0])
+		fmt.Println()
+	}
 	// Filter out invalid starting trades based on capital
 	// Find valid trading pairs via ItemTradingPairs
 	// initial trade can be dependent on one player
 	// subsequent trades should require multiple players as backup
 	// Check if "cycle" (typically a cycle requires 3 nodes) is lucrative
+	// If the first trade for the pair does not work, subsequent trades will not either
+	// If the initial capital cannot satisfy first trade, look at subsequent trades and alert
 	return nil
+}
+
+func printTradeDetail(tradeDetail api.TradeDetail) {
+	price := tradeDetail.Listing.Price
+	fmt.Println("Pay:", price.Exchange.Amount, price.Exchange.Currency)
+	fmt.Println("Receive:", price.Item.Amount, price.Item.Currency)
+	fmt.Println("Stock:", price.Item.Stock)
+	fmt.Println("Account:", tradeDetail.Listing.Account.Name, tradeDetail.Listing.Account.Online.Status)
 }

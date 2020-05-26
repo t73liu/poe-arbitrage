@@ -9,17 +9,17 @@ import (
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List supported bulk items.",
+	Short: "List supported bulk items",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
-			fmt.Println("Failed to retrieve --name value", err)
+			fmt.Println("Failed to retrieve --name value:", err)
 			return err
 		}
 
 		var config Config
 		if err := viper.Unmarshal(&config); err != nil {
-			fmt.Println("Failed to parse config", err)
+			fmt.Println("Failed to parse config:", err)
 			return err
 		}
 
