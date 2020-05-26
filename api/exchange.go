@@ -3,25 +3,21 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 )
 
 const baseUrl = "https://www.pathofexile.com/api/trade/"
 
-type BulkTrades struct {
+type Trades struct {
 	Id       string   `json:"id"`
 	TradeIds []string `json:"result"`
 	Total    uint16   `json:"total"`
 }
 
-type Trades struct {
-	Result []Trade `json:"result"`
-}
-
-type Trade struct {
+type TradeDetail struct {
 	Id      string  `json:"id"`
 	Item    Item    `json:"item"`
 	Listing Listing `json:"listing"`
@@ -43,24 +39,22 @@ type Listing struct {
 
 type Price struct {
 	Exchange struct {
-		Currency string
-		Amount   uint16
-	}
+		Currency string `json:"currency"`
+		Amount   uint16 `json:"amount"`
+	} `json:"exchange"`
 	Item struct {
-		Currency string
-		Amount   uint16
-		Stock    uint16
-	}
+		Currency string `json:"currency"`
+		Amount   uint16 `json:"amount"`
+		Stock    uint16 `json:"stock"`
+	} `json:"item"`
 }
 
 type Account struct {
-	Name   string       `json:"name"`
-	Online OnlineStatus `json:"online"`
-}
-
-type OnlineStatus struct {
-	League string `json:"league"`
-	Status string `json:"status"`
+	Name   string `json:"name"`
+	Online struct {
+		League string `json:"league"`
+		Status string `json:"status"`
+	} `json:"online"`
 }
 
 type Client struct {
@@ -75,9 +69,9 @@ func NewClient(httpClient http.Client, league string) *Client {
 	}
 }
 
-func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) (*BulkTrades, error) {
+func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) (*Trades, error) {
 	postStr := getPostParams(initialItem, targetItem, minStock)
-	bulkReq, err := http.NewRequest(
+	req, err := http.NewRequest(
 		"POST",
 		baseUrl+"exchange/"+c.league,
 		bytes.NewBufferString(postStr),
@@ -86,54 +80,69 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) 
 		return nil, err
 	}
 
-	bulkReq.Header.Set("Content-Type", "application/json")
-	bulkResp, err := c.client.Do(bulkReq)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	defer bulkResp.Body.Close()
+	defer resp.Body.Close()
 
-	if bulkResp.StatusCode != http.StatusOK {
-		fmt.Println("Unable to fetch bulk trade details", bulkResp.Status)
-		os.Exit(1)
-	}
-
-	var bulkTrades BulkTrades
-	if err := json.NewDecoder(bulkResp.Body).Decode(&bulkTrades); err != nil {
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("Unable to fetch bulk trade details", resp.Status)
 		return nil, err
 	}
 
-	if bulkTrades.Total > 0 {
-		// Bulk Trade API has a max limit of 20 ids
-		tradeIds := limitStringArray(bulkTrades.TradeIds, 20)
-		tradeIdsStr := strings.Join(tradeIds, ",")
-
-		tradesReq, err := http.NewRequest("GET", baseUrl+"fetch/"+tradeIdsStr, nil)
-		if err != nil {
-			return nil, err
-		}
-		tradesReq.Header.Set("Content-Type", "application/json")
-		queryParams := tradesReq.URL.Query()
-		queryParams.Add("exchange", "")
-		queryParams.Add("query", bulkTrades.Id)
-		tradesReq.URL.RawQuery = queryParams.Encode()
-
-		tradesResp, err := c.client.Do(tradesReq)
-		if err != nil {
-			return nil, err
-		}
-		defer tradesResp.Body.Close()
-
-		if tradesResp.StatusCode != http.StatusOK {
-			fmt.Println("Unable to fetch trades", tradesResp.Status)
-			os.Exit(1)
-		}
-
-		//if err := json.NewDecoder(tradesResp.Body).Decode(&trades); err != nil {
-		// return nil, err
-		//}
+	var bulkTrades Trades
+	if err := json.NewDecoder(resp.Body).Decode(&bulkTrades); err != nil {
+		return nil, err
 	}
+
 	return &bulkTrades, nil
+}
+
+func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDetail, error) {
+	var tradeDetails []TradeDetail
+	if len(tradeIds) == 0 {
+		return &tradeDetails, nil
+	}
+	if len(tradeIds) > 20 {
+		return nil, errors.New("bulk trade API has a max limit of 20 ids")
+	}
+
+	tradeIdsStr := strings.Join(tradeIds, ",")
+	req, err := http.NewRequest("GET", baseUrl+"fetch/"+tradeIdsStr, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	queryParams := req.URL.Query()
+	queryParams.Add("exchange", "")
+	queryParams.Add("query", queryId)
+	req.URL.RawQuery = queryParams.Encode()
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("Unable to fetch trades", resp.Status)
+		return nil, err
+	}
+
+	var tradesResponse map[string][]TradeDetail
+	if err := json.NewDecoder(resp.Body).Decode(&tradesResponse); err != nil {
+		return nil, err
+	}
+
+	result, ok := tradesResponse["result"]
+	if ok {
+		return &result, nil
+	} else {
+		return &tradeDetails, nil
+	}
 }
 
 func getPostParams(initialItem, targetItem string, minStock uint16) string {
@@ -143,15 +152,4 @@ func getPostParams(initialItem, targetItem string, minStock uint16) string {
 		targetItem,
 		minStock,
 	)
-}
-
-func limitStringArray(array []string, maxSize int) []string {
-	if len(array) <= maxSize {
-		return array
-	}
-	result := make([]string, maxSize)
-	for i := 0; i < maxSize; i++ {
-		result[i] = array[i]
-	}
-	return result
 }

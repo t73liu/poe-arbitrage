@@ -6,8 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"net/http"
-	"os"
 	"poe-arbitrage/api"
+	"poe-arbitrage/strategy"
+	"poe-arbitrage/utils"
 	"time"
 )
 
@@ -40,20 +41,24 @@ var tradeCmd = &cobra.Command{
 
 		return nil
 	},
-	Run: func(cmd *cobra.Command, items []string) {
+	RunE: func(cmd *cobra.Command, items []string) error {
 		initialCapital, err := cmd.Flags().GetStringToInt("capital")
 		if err != nil {
 			fmt.Println("Could not parse --capital argument", err)
-			os.Exit(1)
+			return err
 		}
 
 		var config Config
 		if err := viper.Unmarshal(&config); err != nil {
 			fmt.Println("Failed to parse config", err)
-			os.Exit(1)
+			return err
 		}
 
-		analyzeBulkTrades(items, initialCapital, config)
+		if err := analyzeBulkTrades(items, initialCapital, config); err != nil {
+			return err
+		}
+
+		return nil
 	},
 }
 
@@ -102,7 +107,7 @@ func getLeague(config Config) string {
 	}
 }
 
-func analyzeBulkTrades(items []string, capital map[string]int, config Config) {
+func analyzeBulkTrades(items []string, capital map[string]int, config Config) error {
 	httpClient := http.Client{
 		Timeout: 10 * time.Second,
 		Transport: &http.Transport{
@@ -110,16 +115,40 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) {
 		},
 	}
 	exchangeClient := api.NewClient(httpClient, getLeague(config))
+	tradingPaths := strategy.NewTradingPaths()
 
-	for currIndex, initialItem := range items {
-		for targetIndex := currIndex + 1; targetIndex < len(items); targetIndex++ {
-			targetItem := items[targetIndex]
-			_, err := exchangeClient.GetBulkTrades(initialItem, targetItem, 1)
+	for initialIndex, initialItem := range items {
+		for currIndex, currItem := range items {
+			if currIndex == initialIndex {
+				continue
+			}
+
+			bulkTrades, err := exchangeClient.GetBulkTrades(initialItem, currItem, 1)
 			if err != nil {
 				fmt.Println("Unable to fetch bulk trades", err)
-				os.Exit(1)
+				return err
 			}
-			//fmt.Println(trades)
+
+			tradeDetails, err := exchangeClient.GetTradeDetails(
+				bulkTrades.Id,
+				utils.Limit(bulkTrades.TradeIds, 20),
+			)
+			if err != nil {
+				fmt.Println("Unable to fetch trade details", err)
+				return err
+			}
+
+			if err := tradingPaths.Set(initialItem, currItem, tradeDetails); err != nil {
+				fmt.Println(err)
+				return err
+			}
 		}
 	}
+
+	if err := tradingPaths.Analyze(capital); err != nil {
+		fmt.Println("Unable to analyze bulk trades", err)
+		return err
+	}
+
+	return nil
 }

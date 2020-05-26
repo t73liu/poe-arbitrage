@@ -1,26 +1,54 @@
 package strategy
 
-import "poe-arbitrage/api"
+import (
+	"errors"
+	"fmt"
+	"poe-arbitrage/api"
+)
 
-// Represents an adjacency matrix for a directed graph
+// Represents an adjacency list for a directed graph (potentially cyclic)
 type TradingPaths struct {
-	Graph map[TradingPair]api.BulkTrades
+	TradingPairTrades map[TradingPair][]api.TradeDetail
+	ItemTradingPairs  map[string][]TradingPair
 }
 
-func (tp *TradingPaths) Add(initialItem, targetItem string, bulkTrades api.BulkTrades) {
+func NewTradingPaths() *TradingPaths {
+	return &TradingPaths{
+		TradingPairTrades: make(map[TradingPair][]api.TradeDetail),
+		ItemTradingPairs:  make(map[string][]TradingPair),
+	}
+}
+
+type TradingPair struct {
+	InitialItem string
+	TargetItem  string
+}
+
+func (tp *TradingPaths) Set(initialItem, targetItem string, tradeDetails *[]api.TradeDetail) error {
+	if initialItem == targetItem {
+		return errors.New("invalid trading path: initialItem cannot equal targetItem")
+	}
+
 	tradingPair := TradingPair{
 		InitialItem: initialItem,
 		TargetItem:  targetItem,
 	}
-	tp.Graph[tradingPair] = bulkTrades
+
+	if _, ok := tp.TradingPairTrades[tradingPair]; !ok {
+		tradingPairs, _ := tp.ItemTradingPairs[initialItem]
+		tp.ItemTradingPairs[initialItem] = append(tradingPairs, tradingPair)
+	}
+	tp.TradingPairTrades[tradingPair] = *tradeDetails
+
+	return nil
 }
 
-func (tp *TradingPaths) Get(initialItem, targetItem string) *api.BulkTrades {
+func (tp *TradingPaths) Get(initialItem, targetItem string) *[]api.TradeDetail {
 	tradingPair := TradingPair{
 		InitialItem: initialItem,
 		TargetItem:  targetItem,
 	}
-	bulkTrades, ok := tp.Graph[tradingPair]
+	bulkTrades, ok := tp.TradingPairTrades[tradingPair]
 	if ok {
 		return &bulkTrades
 	} else {
@@ -28,7 +56,8 @@ func (tp *TradingPaths) Get(initialItem, targetItem string) *api.BulkTrades {
 	}
 }
 
-type TradingPair struct {
-	InitialItem string
-	TargetItem  string
+// TODO analyze profitable trading paths given initial capital constraints
+func (tp *TradingPaths) Analyze(capital map[string]int) error {
+	fmt.Printf("%+v\n", tp)
+	return nil
 }
