@@ -14,14 +14,11 @@ and running `go build poe-arbitrage`. Additional documentation can be found
 
 ## Feature
 
-- Detect opportunities with a minimum of `N` online users for intermediate and
-  final transactions.
-  - Decreases potential transaction costs and opportunity costs of holding
-    non-liquid items.
-  - Exclude AFK users by default
-- Detect opportunities with a minimum of `N` profit (dependent on trading pair)
-- Ignore/favorite users
-- Print whispers for profitable trades
+- [x] Fetch bulk trades from PoE Bulk Exchange API
+- [x] Exclude AFK users by default
+- [x] Ignore users
+- [x] Favorite users
+- [ ] Print whispers for profitable arbitrage opportunities
 
 ## Usage
 

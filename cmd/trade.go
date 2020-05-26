@@ -9,6 +9,7 @@ import (
 	"poe-arbitrage/api"
 	"poe-arbitrage/strategy"
 	"poe-arbitrage/utils"
+	"sort"
 	"time"
 )
 
@@ -139,6 +140,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 			}
 
 			tradeDetails = filterTradeDetails(tradeDetails, config)
+			sortTrades(tradeDetails, config)
 			if len(*tradeDetails) > 0 {
 				if err := tradingPaths.Set(initialItem, currItem, tradeDetails); err != nil {
 					fmt.Println(err)
@@ -171,7 +173,32 @@ func filterTradeDetails(tradeDetails *[]api.TradeDetail, config Config) *[]api.T
 	return &filteredTrades
 }
 
-// TODO order by price, favorite, last active
-func sortTradeDetails(tradeDetails *[]api.TradeDetail, config Config) *[]api.TradeDetail {
-	return tradeDetails
+func sortTrades(tradeDetails *[]api.TradeDetail, config Config) {
+	hasFavorite := len(config.FavoritePlayers) != 0
+	less := func(i, j int) bool {
+		curr := (*tradeDetails)[i]
+		next := (*tradeDetails)[j]
+		currentPrice := curr.Listing.Price
+		currRatio := float64(currentPrice.Item.Amount) / float64(currentPrice.Exchange.Amount)
+		nextPrice := next.Listing.Price
+		nextRatio := float64(nextPrice.Item.Amount) / float64(nextPrice.Exchange.Amount)
+		// Prefer trades with highest value
+		if nextRatio < currRatio {
+			return true
+		} else if nextRatio == currRatio {
+			currFavorite := utils.Contains(config.FavoritePlayers, curr.Listing.Account.Name)
+			nextFavorite := utils.Contains(config.FavoritePlayers, next.Listing.Account.Name)
+			// Prefer trades with favorite players
+			if hasFavorite && currFavorite && !nextFavorite {
+				return true
+			} else if currFavorite == nextFavorite {
+				// Prefer trades with more stock
+				if nextPrice.Item.Stock < currentPrice.Item.Stock {
+					return true
+				}
+			}
+		}
+		return false
+	}
+	sort.SliceStable(*tradeDetails, less)
 }
