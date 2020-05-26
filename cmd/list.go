@@ -4,24 +4,23 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
 	"strings"
 )
 
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List supported bulk items.",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		name, err := cmd.Flags().GetString("name")
 		if err != nil {
 			fmt.Println("Failed to retrieve --name value", err)
-			os.Exit(1)
+			return err
 		}
 
 		var config Config
 		if err := viper.Unmarshal(&config); err != nil {
 			fmt.Println("Failed to parse config", err)
-			os.Exit(1)
+			return err
 		}
 
 		trimmedSubstring := strings.ToLower(strings.TrimSpace(name))
@@ -31,6 +30,7 @@ var listCmd = &cobra.Command{
 				fmt.Printf("%+v\n", item)
 			}
 		}
+		return nil
 	},
 }
 
