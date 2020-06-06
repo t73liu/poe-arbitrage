@@ -17,44 +17,49 @@ type Trades struct {
 	Total    uint16   `json:"total"`
 }
 
-type TradeDetail struct {
-	Id      string  `json:"id"`
-	Item    Item    `json:"item"`
-	Listing Listing `json:"listing"`
-}
-
-type Item struct {
-	Identified bool   `json:"identified"`
-	Verified   bool   `json:"verified"`
-	Corrupted  bool   `json:"corrupted"`
-	Level      uint8  `json:"ilvl"`
-	Note       string `json:"note"`
-}
-
-type Listing struct {
-	Price   Price   `json:"price"`
-	Account Account `json:"account"`
-	Whisper string  `json:"whisper"`
-}
-
-type Price struct {
-	Exchange struct {
-		Currency string `json:"currency"`
-		Amount   uint16 `json:"amount"`
-	} `json:"exchange"`
+// GGG trade detail is not exposed since it is very verbose and subject to change
+type tradeDetail struct {
+	Id   string `json:"id"`
 	Item struct {
-		Currency string `json:"currency"`
-		Amount   uint16 `json:"amount"`
-		Stock    uint16 `json:"stock"`
+		Identified bool   `json:"identified"`
+		Verified   bool   `json:"verified"`
+		Corrupted  bool   `json:"corrupted"`
+		Level      uint8  `json:"ilvl"`
+		Note       string `json:"note"`
 	} `json:"item"`
+	Listing struct {
+		Price struct {
+			Exchange struct {
+				Currency string `json:"currency"`
+				Amount   uint16 `json:"amount"`
+			} `json:"exchange"`
+			Item struct {
+				Currency string `json:"currency"`
+				Amount   uint16 `json:"amount"`
+				Stock    uint16 `json:"stock"`
+			} `json:"item"`
+		} `json:"price"`
+		Account struct {
+			Name   string `json:"name"`
+			Online struct {
+				League string `json:"league"`
+				Status string `json:"status"`
+			} `json:"online"`
+		} `json:"account"`
+		Whisper string `json:"whisper"`
+	} `json:"listing"`
 }
 
-type Account struct {
-	Name   string `json:"name"`
-	Online struct {
-		League string `json:"league"`
-		Status string `json:"status"`
-	} `json:"online"`
+type TradeDetail struct {
+	Account     string
+	AFK         bool
+	Whisper     string
+	PriceAmount uint16
+	PriceUnit   string
+	ItemAmount  uint16
+	ItemUnit    string
+	Stock       uint16
+	Ratio       float64
 }
 
 type Client struct {
@@ -100,9 +105,8 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) 
 	return &bulkTrades, nil
 }
 
-// TODO simplify data model
-func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDetail, error) {
-	var tradeDetails []TradeDetail
+func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDetail, error) {
+	var tradeDetails []tradeDetail
 	if len(tradeIds) == 0 {
 		return &tradeDetails, nil
 	}
@@ -133,7 +137,7 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 		return nil, err
 	}
 
-	var tradesResponse map[string][]TradeDetail
+	var tradesResponse map[string][]tradeDetail
 	if err := json.NewDecoder(resp.Body).Decode(&tradesResponse); err != nil {
 		return nil, err
 	}
@@ -144,6 +148,32 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 	} else {
 		return &tradeDetails, nil
 	}
+}
+
+func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDetail, error) {
+	tradeDetails, err := c.getTradeDetails(queryId, tradeIds)
+	if err != nil {
+		return nil, err
+	}
+
+	formattedTradeDetails := make([]TradeDetail, 0, len(*tradeDetails))
+	for _, tradeDetail := range *tradeDetails {
+		cost := tradeDetail.Listing.Price.Exchange.Amount
+		itemAmount := tradeDetail.Listing.Price.Item.Amount
+		formattedTrade := TradeDetail{
+			Account:     tradeDetail.Listing.Account.Name,
+			AFK:         tradeDetail.Listing.Account.Online.Status == "afk",
+			Whisper:     tradeDetail.Listing.Whisper,
+			PriceAmount: cost,
+			PriceUnit:   tradeDetail.Listing.Price.Exchange.Currency,
+			ItemAmount:  itemAmount,
+			ItemUnit:    tradeDetail.Listing.Price.Item.Currency,
+			Ratio:       float64(itemAmount) / float64(cost),
+			Stock:       tradeDetail.Listing.Price.Item.Stock,
+		}
+		formattedTradeDetails = append(formattedTradeDetails, formattedTrade)
+	}
+	return &formattedTradeDetails, nil
 }
 
 func getPostParams(initialItem, targetItem string, minStock uint16) string {

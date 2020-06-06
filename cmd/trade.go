@@ -161,11 +161,10 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 func filterTradeDetails(tradeDetails *[]api.TradeDetail, config Config) *[]api.TradeDetail {
 	filteredTrades := make([]api.TradeDetail, 0, len(*tradeDetails))
 	for _, trade := range *tradeDetails {
-		account := trade.Listing.Account
-		if config.ExcludeAFK && account.Online.Status == "afk" {
+		if config.ExcludeAFK && trade.AFK {
 			continue
 		}
-		if utils.Contains(config.IgnoredPlayers, account.Name) {
+		if utils.Contains(config.IgnoredPlayers, trade.Account) {
 			continue
 		}
 		filteredTrades = append(filteredTrades, trade)
@@ -178,22 +177,18 @@ func sortTrades(tradeDetails *[]api.TradeDetail, config Config) {
 	less := func(i, j int) bool {
 		curr := (*tradeDetails)[i]
 		next := (*tradeDetails)[j]
-		currentPrice := curr.Listing.Price
-		currRatio := float64(currentPrice.Item.Amount) / float64(currentPrice.Exchange.Amount)
-		nextPrice := next.Listing.Price
-		nextRatio := float64(nextPrice.Item.Amount) / float64(nextPrice.Exchange.Amount)
 		// Prefer trades with highest value
-		if nextRatio < currRatio {
+		if next.Ratio < curr.Ratio {
 			return true
-		} else if nextRatio == currRatio {
-			currFavorite := utils.Contains(config.FavoritePlayers, curr.Listing.Account.Name)
-			nextFavorite := utils.Contains(config.FavoritePlayers, next.Listing.Account.Name)
+		} else if next.Ratio == curr.Ratio {
+			currFavorite := utils.Contains(config.FavoritePlayers, curr.Account)
+			nextFavorite := utils.Contains(config.FavoritePlayers, next.Account)
 			// Prefer trades with favorite players
 			if hasFavorite && currFavorite && !nextFavorite {
 				return true
 			} else if currFavorite == nextFavorite {
 				// Prefer trades with more stock
-				if nextPrice.Item.Stock < currentPrice.Item.Stock {
+				if next.Stock < curr.Stock {
 					return true
 				}
 			}

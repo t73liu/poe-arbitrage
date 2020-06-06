@@ -74,9 +74,8 @@ func (tp *TradingPaths) Analyze(initialCapital map[string]int) error {
 }
 
 func printTradeDetail(tradeDetail api.TradeDetail) {
-	price := tradeDetail.Listing.Price
-	fmt.Println("Pay:", price.Exchange.Amount, price.Exchange.Currency)
-	fmt.Println("Receive:", price.Item.Amount, price.Item.Currency)
-	fmt.Println("Stock:", price.Item.Stock)
-	fmt.Println("Account:", tradeDetail.Listing.Account.Name, tradeDetail.Listing.Account.Online.Status)
+	fmt.Println("Pay:", tradeDetail.PriceAmount, tradeDetail.PriceUnit)
+	fmt.Println("Receive:", tradeDetail.ItemAmount, tradeDetail.ItemUnit)
+	fmt.Println("Stock:", tradeDetail.Stock)
+	fmt.Println("Account:", tradeDetail.Account)
 }
