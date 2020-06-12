@@ -116,7 +116,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 		},
 	}
 	exchangeClient := api.NewClient(httpClient, getLeague(config))
-	tradingPaths := strategy.NewTradingPaths()
+	tradingPaths := strategy.NewTradingPaths(capital)
 
 	for initialIndex, initialItem := range items {
 		for currIndex, currItem := range items {
@@ -135,7 +135,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 				utils.Limit(bulkTrades.TradeIds, 20),
 			)
 			if err != nil {
-				fmt.Println("Unable to fetch trade details:", err)
+				fmt.Println("Unable to fetch trade details:", initialItem, currItem)
 				return err
 			}
 
@@ -150,7 +150,7 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 		}
 	}
 
-	if err := tradingPaths.Analyze(capital); err != nil {
+	if err := tradingPaths.Analyze(); err != nil {
 		fmt.Println("Unable to analyze bulk trades:", err)
 		return err
 	}

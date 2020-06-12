@@ -118,7 +118,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 			item := BulkItem{
 				Id:        itemId,
 				Name:      itemSlice[1],
-				StackSize: uint16(stackSize),
+				StackSize: uint(stackSize),
 			}
 			config.BulkItems[itemId] = item
 		}

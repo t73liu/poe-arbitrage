@@ -34,7 +34,7 @@ and is subject to its rate-limits.
 type BulkItem struct {
 	Id        string `json:"id"`
 	Name      string `json:"name"`
-	StackSize uint16 `json:"stackSize"`
+	StackSize uint   `json:"stackSize"`
 }
 
 type Config struct {

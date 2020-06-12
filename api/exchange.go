@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"net/http"
 	"strings"
 )
@@ -14,7 +15,7 @@ const baseUrl = "https://www.pathofexile.com/api/trade/"
 type Trades struct {
 	Id       string   `json:"id"`
 	TradeIds []string `json:"result"`
-	Total    uint16   `json:"total"`
+	Total    uint     `json:"total"`
 }
 
 // GGG trade detail is not exposed since it is very verbose and subject to change
@@ -30,13 +31,13 @@ type tradeDetail struct {
 	Listing struct {
 		Price struct {
 			Exchange struct {
-				Currency string `json:"currency"`
-				Amount   uint16 `json:"amount"`
+				Currency string  `json:"currency"`
+				Amount   float64 `json:"amount"`
 			} `json:"exchange"`
 			Item struct {
-				Currency string `json:"currency"`
-				Amount   uint16 `json:"amount"`
-				Stock    uint16 `json:"stock"`
+				Currency string  `json:"currency"`
+				Amount   float64 `json:"amount"`
+				Stock    uint    `json:"stock"`
 			} `json:"item"`
 		} `json:"price"`
 		Account struct {
@@ -54,11 +55,11 @@ type TradeDetail struct {
 	Account     string
 	AFK         bool
 	Whisper     string
-	PriceAmount uint16
+	PriceAmount uint
 	PriceUnit   string
-	ItemAmount  uint16
+	ItemAmount  uint
 	ItemUnit    string
-	Stock       uint16
+	Stock       uint
 	Ratio       float64
 }
 
@@ -74,7 +75,7 @@ func NewClient(httpClient http.Client, league string) *Client {
 	}
 }
 
-func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint16) (*Trades, error) {
+func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint) (*Trades, error) {
 	postStr := getPostParams(initialItem, targetItem, minStock)
 	req, err := http.NewRequest(
 		"POST",
@@ -164,11 +165,11 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 			Account:     tradeDetail.Listing.Account.Name,
 			AFK:         tradeDetail.Listing.Account.Online.Status == "afk",
 			Whisper:     tradeDetail.Listing.Whisper,
-			PriceAmount: cost,
+			PriceAmount: uint(math.Ceil(cost)),
 			PriceUnit:   tradeDetail.Listing.Price.Exchange.Currency,
-			ItemAmount:  itemAmount,
+			ItemAmount:  uint(math.Floor(itemAmount)),
 			ItemUnit:    tradeDetail.Listing.Price.Item.Currency,
-			Ratio:       float64(itemAmount) / float64(cost),
+			Ratio:       itemAmount / cost,
 			Stock:       tradeDetail.Listing.Price.Item.Stock,
 		}
 		formattedTradeDetails = append(formattedTradeDetails, formattedTrade)
@@ -176,7 +177,7 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 	return &formattedTradeDetails, nil
 }
 
-func getPostParams(initialItem, targetItem string, minStock uint16) string {
+func getPostParams(initialItem, targetItem string, minStock uint) string {
 	return fmt.Sprintf(
 		`{"exchange":{"status":{"option":"online"},"have":["%s"],"want":["%s"],"minimum":%d}}`,
 		initialItem,
