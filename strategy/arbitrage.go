@@ -80,35 +80,49 @@ func (tp *TradingPaths) Analyze() error {
 		}
 	}
 
-	for _, item := range initialItems {
-		fmt.Println("Trades starting from:", item)
-		initialPairs := tp.itemTradingPairs[item]
-		tradingCycles := make([][]TradingPair, 0, len(initialPairs))
-
-		// Check for direct trade paths (e.g. exa => chaos => exa)
-		for _, initialTradePair := range initialPairs {
-			reverseTradePair := TradingPair{
-				InitialItem: initialTradePair.TargetItem,
-				TargetItem:  initialTradePair.InitialItem,
-			}
-			if _, ok := tp.tradingPairTrades[reverseTradePair]; ok {
-				tradingCycles = append(tradingCycles, []TradingPair{
-					initialTradePair,
-					reverseTradePair,
-				})
-			}
-		}
-
-		// TODO: Check simple cycle trade paths (e.g. exa => gcp => chaos => exa)
-		// stack := make([]TradingPair, len(initialPairs))
-		// DFS with backtrack and visited set
-
-		// Print profitable trade paths
-		for _, tradingCycle := range tradingCycles {
-			tp.printProfitableTradePath(tradingCycle)
+	for _, initialItem := range initialItems {
+		fmt.Println("Trades starting from:", initialItem)
+		tradingPaths := tp.getTradingPaths(initialItem)
+		for _, tradingPath := range tradingPaths {
+			fmt.Printf("%+v\n", tradingPath)
+			tp.printProfitableTradePath(tradingPath)
 		}
 	}
 	return nil
+}
+
+// DFS with backtrack and visited set  (e.g. exa => gcp => chaos => exa)
+func (tp *TradingPaths) getTradingPaths(initialItem string) [][]TradingPair {
+	stack := tp.itemTradingPairs[initialItem]
+	tradingPaths := make([][]TradingPair, 0, len(stack))
+	currentTradingPath := make([]TradingPair, 0, len(stack))
+	visited := make(map[string]bool)
+	visited[initialItem] = true
+	for len(stack) > 0 {
+		// Pop last added trading pair from stack
+		lastIndex := len(stack) - 1
+		currentItemPair := stack[lastIndex]
+		currentItem := currentItemPair.InitialItem
+		targetItem := currentItemPair.TargetItem
+		stack = stack[:lastIndex]
+		visited[currentItem] = true
+
+		if visited[targetItem] {
+			if targetItem == initialItem {
+				tradingPaths = append(
+					tradingPaths,
+					append(currentTradingPath, currentItemPair),
+				)
+			}
+		} else {
+			currentTradingPath = append(currentTradingPath, currentItemPair)
+			targetItemPairs := tp.itemTradingPairs[currentItemPair.TargetItem]
+			for _, targetItemPair := range targetItemPairs {
+				stack = append(stack, targetItemPair)
+			}
+		}
+	}
+	return tradingPaths
 }
 
 func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
