@@ -161,18 +161,23 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 	for _, tradeDetail := range *tradeDetails {
 		cost := tradeDetail.Listing.Price.Exchange.Amount
 		itemAmount := tradeDetail.Listing.Price.Item.Amount
+		// Rounding partial amounts can increase trade costs but this rarely happens
+		roundedPriceAmount := uint(math.Ceil(cost))
+		roundedItemAmount := uint(math.Floor(itemAmount))
 		formattedTrade := TradeDetail{
 			Account:     tradeDetail.Listing.Account.Name,
 			AFK:         tradeDetail.Listing.Account.Online.Status == "afk",
 			Whisper:     tradeDetail.Listing.Whisper,
-			PriceAmount: uint(math.Ceil(cost)),
+			PriceAmount: roundedPriceAmount,
 			PriceUnit:   tradeDetail.Listing.Price.Exchange.Currency,
-			ItemAmount:  uint(math.Floor(itemAmount)),
+			ItemAmount:  roundedItemAmount,
 			ItemUnit:    tradeDetail.Listing.Price.Item.Currency,
 			Ratio:       itemAmount / cost,
 			Stock:       tradeDetail.Listing.Price.Item.Stock,
 		}
-		formattedTradeDetails = append(formattedTradeDetails, formattedTrade)
+		if roundedItemAmount >= 1 && roundedPriceAmount >= 1 {
+			formattedTradeDetails = append(formattedTradeDetails, formattedTrade)
+		}
 	}
 	return &formattedTradeDetails, nil
 }
