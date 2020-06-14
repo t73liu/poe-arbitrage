@@ -17,6 +17,23 @@ type TradingPaths struct {
 	noCapitalRequirements bool
 }
 
+type TradingPair struct {
+	InitialItem string
+	TargetItem  string
+}
+
+type validTrade struct {
+	listing api.TradeDetail
+	whisper string
+}
+
+type tradePathsDFS struct {
+	initialItem string
+	visited     map[string]bool
+	currentPath []TradingPair
+	result      [][]TradingPair
+}
+
 func NewTradingPaths(capital map[string]int) *TradingPaths {
 	return &TradingPaths{
 		tradingPairTrades:     make(map[TradingPair][]api.TradeDetail),
@@ -24,16 +41,6 @@ func NewTradingPaths(capital map[string]int) *TradingPaths {
 		capital:               capital,
 		noCapitalRequirements: len(capital) == 0,
 	}
-}
-
-type TradingPair struct {
-	InitialItem string
-	TargetItem  string
-}
-
-type ValidTrade struct {
-	listing api.TradeDetail
-	whisper string
 }
 
 func (tp *TradingPaths) Set(initialItem, targetItem string, tradeDetails *[]api.TradeDetail) error {
@@ -82,9 +89,14 @@ func (tp *TradingPaths) Analyze() error {
 
 	for _, initialItem := range initialItems {
 		fmt.Println("Trades starting from:", initialItem)
-		tradingPaths := tp.getTradingPaths(initialItem)
-		for _, tradingPath := range tradingPaths {
-			fmt.Printf("%+v\n", tradingPath)
+		dfs := &tradePathsDFS{
+			initialItem: initialItem,
+			visited:     make(map[string]bool),
+			currentPath: make([]TradingPair, 0, len(tp.itemTradingPairs)),
+			result:      make([][]TradingPair, 0, len(tp.itemTradingPairs)),
+		}
+		tp.getTradingPaths(initialItem, dfs)
+		for _, tradingPath := range dfs.result {
 			tp.printProfitableTradePath(tradingPath)
 		}
 	}
@@ -92,44 +104,27 @@ func (tp *TradingPaths) Analyze() error {
 }
 
 // DFS with backtrack and visited set  (e.g. exa => gcp => chaos => exa)
-func (tp *TradingPaths) getTradingPaths(initialItem string) [][]TradingPair {
-	initialPairs := tp.itemTradingPairs[initialItem]
-	stack := make([]TradingPair, len(initialPairs))
-	copy(stack, initialPairs)
-	tradingPaths := make([][]TradingPair, 0, len(stack))
-	currentTradingPath := make([]TradingPair, 0, len(stack))
-	visited := make(map[string]bool)
-	visited[initialItem] = true
-	for len(stack) > 0 {
-		// Pop last added trading pair from stack
-		lastIndex := len(stack) - 1
-		currentItemPair := stack[lastIndex]
-		currentItem := currentItemPair.InitialItem
-		targetItem := currentItemPair.TargetItem
-		stack = stack[:lastIndex]
-		visited[currentItem] = true
-
-		if visited[targetItem] {
-			if targetItem == initialItem {
-				tradingPaths = append(
-					tradingPaths,
-					append(currentTradingPath, currentItemPair),
-				)
-			}
-		} else {
-			currentTradingPath = append(currentTradingPath, currentItemPair)
-			targetItemPairs := tp.itemTradingPairs[currentItemPair.TargetItem]
-			for _, targetItemPair := range targetItemPairs {
-				stack = append(stack, targetItemPair)
-			}
+func (tp *TradingPaths) getTradingPaths(item string, dfs *tradePathsDFS) {
+	if dfs.visited[item] {
+		if item == dfs.initialItem {
+			dfs.result = append(dfs.result, dfs.currentPath)
 		}
+	} else {
+		dfs.visited[item] = true
+		for _, pair := range tp.itemTradingPairs[item] {
+			dfs.currentPath = append(dfs.currentPath, pair)
+			tp.getTradingPaths(pair.TargetItem, dfs)
+			newPath := make([]TradingPair, len(dfs.currentPath)-1)
+			copy(newPath, dfs.currentPath)
+			dfs.currentPath = newPath
+		}
+		dfs.visited[item] = false
 	}
-	return tradingPaths
 }
 
-func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
-	validTrades := make([]ValidTrade, 0, 5)
-	initialPair := tradingCycle[0]
+func (tp *TradingPaths) printProfitableTradePath(tradingPath []TradingPair) {
+	validTrades := make([]validTrade, 0, 5)
+	initialPair := tradingPath[0]
 	initialItem := initialPair.InitialItem
 	initialAmount := uint(tp.capital[initialItem])
 
@@ -140,7 +135,7 @@ func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
 	currentAmount := initialAmount
 	hypotheticalPnL := 100.0
 
-	for _, pair := range tradingCycle {
+	for _, pair := range tradingPath {
 		trades := tp.tradingPairTrades[pair]
 		noValidTrades := true
 		for _, trade := range trades {
@@ -152,11 +147,11 @@ func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
 					trade.Stock,
 					currentAmount,
 				)
-				currentAmount = maxItem
+				currentAmount = maxItem + uint(tp.capital[pair.TargetItem])
 				hypotheticalPnL = trade.Ratio * hypotheticalPnL
 				validTrades = append(
 					validTrades,
-					ValidTrade{
+					validTrade{
 						listing: trade,
 						whisper: formatWhisper(trade.Whisper, maxPrice, maxItem),
 					},
@@ -171,12 +166,13 @@ func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
 	}
 
 	// At least 1% gain
-	if hypotheticalPnL > 101 && len(validTrades) == len(tradingCycle) {
+	if hypotheticalPnL > 101 && len(validTrades) == len(tradingPath) {
+		fmt.Printf("%+v\n", tradingPath)
 		for _, validTrade := range validTrades {
 			fmt.Println(validTrade.whisper)
 			printTradeDetail(validTrade.listing)
 		}
-		fmt.Printf("\nGains: %.3f%%\n\n", hypotheticalPnL)
+		fmt.Printf("\nGains: %.3f%% %s\n", hypotheticalPnL-100, initialItem)
 	}
 	fmt.Println()
 }
