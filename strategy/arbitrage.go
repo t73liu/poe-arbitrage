@@ -123,6 +123,7 @@ func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
 	}
 	currentAmount := initialAmount
 	hypotheticalPnL := 100.0
+
 	for _, pair := range tradingCycle {
 		trades := tp.tradingPairTrades[pair]
 		noValidTrades := true
@@ -152,7 +153,8 @@ func (tp *TradingPaths) printProfitableTradePath(tradingCycle []TradingPair) {
 			break
 		}
 	}
-	// At least 5% gain
+
+	// At least 1% gain
 	if hypotheticalPnL > 101 && len(validTrades) == len(tradingCycle) {
 		for _, validTrade := range validTrades {
 			fmt.Println(validTrade.whisper)
@@ -181,8 +183,8 @@ func calcMaxTransaction(priceAmount, itemAmount, stockSize, capital uint) (maxPr
 }
 
 func formatWhisper(whisper string, priceAmount, itemAmount uint) string {
-	whisper = strings.Replace(whisper, "{0}", strconv.Itoa(int(priceAmount)), 1)
-	whisper = strings.Replace(whisper, "{1}", strconv.Itoa(int(itemAmount)), 1)
+	whisper = strings.Replace(whisper, "{0}", strconv.Itoa(int(itemAmount)), 1)
+	whisper = strings.Replace(whisper, "{1}", strconv.Itoa(int(priceAmount)), 1)
 	return whisper
 }
 
@@ -190,5 +192,5 @@ func printTradeDetail(tradeDetail api.TradeDetail) {
 	fmt.Println("Pay:", tradeDetail.PriceAmount, tradeDetail.PriceUnit)
 	fmt.Println("Receive:", tradeDetail.ItemAmount, tradeDetail.ItemUnit)
 	fmt.Println("Stock:", tradeDetail.Stock)
-	fmt.Println("Account:", tradeDetail.Account)
+	fmt.Printf("Ratio: %.3f\n", tradeDetail.Ratio)
 }

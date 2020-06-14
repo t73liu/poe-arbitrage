@@ -62,7 +62,7 @@ for extended periods of time.
 
 - How will the stack size affect trades?
   - Example: Exalt Orbs for Chaos Orbs where one trade is not enough.
-  - Current limiting trades to `5 * 12 * stack size`
+  - Should trades be limited to `5 * 12 * stack size`?
 - What are the API rate limits for POE exchange API?
 - Profitability of flipping inefficiently priced items.
   - Price rare items via ML.
