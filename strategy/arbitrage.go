@@ -93,7 +93,9 @@ func (tp *TradingPaths) Analyze() error {
 
 // DFS with backtrack and visited set  (e.g. exa => gcp => chaos => exa)
 func (tp *TradingPaths) getTradingPaths(initialItem string) [][]TradingPair {
-	stack := tp.itemTradingPairs[initialItem]
+	initialPairs := tp.itemTradingPairs[initialItem]
+	stack := make([]TradingPair, len(initialPairs))
+	copy(stack, initialPairs)
 	tradingPaths := make([][]TradingPair, 0, len(stack))
 	currentTradingPath := make([]TradingPair, 0, len(stack))
 	visited := make(map[string]bool)
