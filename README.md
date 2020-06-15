@@ -18,7 +18,7 @@ and running `go build poe-arbitrage`. Additional documentation can be found
 - [x] Exclude AFK users by default
 - [x] Ignore users
 - [x] Favorite users
-- [ ] Print whispers for profitable arbitrage opportunities
+- [x] Print whispers for profitable arbitrage opportunities
 
 ## Usage
 
