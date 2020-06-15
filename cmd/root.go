@@ -28,7 +28,7 @@ spreads for bulk-item trades. It relies on the official PoE
 Bulk Item Exchange (https://www.pathofexile.com/trade/exchange)
 and is subject to its rate-limits.
 `,
-	Version: "1.0.0",
+	Version: "1.1.0",
 }
 
 type BulkItem struct {
