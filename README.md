@@ -32,7 +32,7 @@ poe-arbitrage list --name "orb of"
 # Check for opportunities when trading Chaos Orbs or Exalt Orbs (at least 2 items)
 poe-arbitrage trade chaos exa
 
-# Check for opportunities in the current hardcore league
+# Check for opportunities when trading the following 3 items
 poe-arbitrage trade chaos exa gcp
 
 # Check for opportunities with 100 Chaos, 0 Exalts and 20 GCPs
