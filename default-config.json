@@ -10,8 +10,8 @@
       "name": "Orb of Alteration",
       "stackSize": 20
     },
-    "fuse": {
-      "id": "fuse",
+    "fusing": {
+      "id": "fusing",
       "name": "Orb of Fusing",
       "stackSize": 20
     },
@@ -30,24 +30,29 @@
       "name": "Gemcutter's Prism",
       "stackSize": 20
     },
-    "exa": {
-      "id": "exa",
+    "exalted": {
+      "id": "exalted",
       "name": "Exalted Orb",
       "stackSize": 10
     },
-    "chrom": {
-      "id": "chrom",
+    "chrome": {
+      "id": "chrome",
       "name": "Chromatic Orb",
       "stackSize": 20
     },
-    "jew": {
-      "id": "jew",
+    "jewellers": {
+      "id": "jewellers",
       "name": "Jeweller's Orb",
       "stackSize": 20
     },
-    "engineers-orb": {
-      "id": "engineers-orb",
+    "engineers": {
+      "id": "engineers",
       "name": "Engineer's Orb",
+      "stackSize": 20
+    },
+    "infused-engineers-orb": {
+      "id": "infused-engineers-orb",
+      "name": "Infused Engineer's Orb",
       "stackSize": 20
     },
     "chance": {
@@ -90,8 +95,8 @@
       "name": "Vaal Orb",
       "stackSize": 10
     },
-    "orb-of-annulment": {
-      "id": "orb-of-annulment",
+    "annul": {
+      "id": "annul",
       "name": "Orb of Annulment",
       "stackSize": 20
     },
@@ -115,33 +120,33 @@
       "name": "Harbinger's Orb",
       "stackSize": 20
     },
-    "wis": {
-      "id": "wis",
+    "wisdom": {
+      "id": "wisdom",
       "name": "Scroll of Wisdom",
       "stackSize": 40
     },
-    "port": {
-      "id": "port",
+    "portal": {
+      "id": "portal",
       "name": "Portal Scroll",
       "stackSize": 40
     },
-    "scr": {
-      "id": "scr",
+    "scrap": {
+      "id": "scrap",
       "name": "Armourer's Scrap",
       "stackSize": 40
     },
-    "whe": {
-      "id": "whe",
+    "whetstone": {
+      "id": "whetstone",
       "name": "Blacksmith's Whetstone",
       "stackSize": 20
     },
-    "ba": {
-      "id": "ba",
+    "bauble": {
+      "id": "bauble",
       "name": "Glassblower's Bauble",
       "stackSize": 20
     },
-    "tra": {
-      "id": "tra",
+    "transmute": {
+      "id": "transmute",
       "name": "Orb of Transmutation",
       "stackSize": 40
     },
@@ -150,13 +155,13 @@
       "name": "Orb of Augmentation",
       "stackSize": 30
     },
-    "mir": {
-      "id": "mir",
+    "mirror": {
+      "id": "mirror",
       "name": "Mirror of Kalandra",
       "stackSize": 10
     },
-    "ete": {
-      "id": "ete",
+    "eternal": {
+      "id": "eternal",
       "name": "Eternal Orb",
       "stackSize": 10
     },
@@ -169,6 +174,36 @@
       "id": "silver",
       "name": "Silver Coin",
       "stackSize": 30
+    },
+    "crusaders-exalted-orb": {
+      "id": "crusaders-exalted-orb",
+      "name": "Crusader's Exalted Orb",
+      "stackSize": 10
+    },
+    "redeemers-exalted-orb": {
+      "id": "redeemers-exalted-orb",
+      "name": "Redeemer's Exalted Orb",
+      "stackSize": 10
+    },
+    "hunters-exalted-orb": {
+      "id": "hunters-exalted-orb",
+      "name": "Hunter's Exalted Orb",
+      "stackSize": 10
+    },
+    "warlords-exalted-orb": {
+      "id": "warlords-exalted-orb",
+      "name": "Warlord's Exalted Orb",
+      "stackSize": 10
+    },
+    "awakeners-orb": {
+      "id": "awakeners-orb",
+      "name": "Awakener's Orb",
+      "stackSize": 10
+    },
+    "rogues-marker": {
+      "id": "rogues-marker",
+      "name": "Rogue's Marker",
+      "stackSize": 50000
     },
     "apprentice-sextant": {
       "id": "apprentice-sextant",
