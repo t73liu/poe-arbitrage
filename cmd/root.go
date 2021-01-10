@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -117,8 +118,7 @@ func initConfigE() error {
 			defer resp.Body.Close()
 
 			if resp.StatusCode != http.StatusOK {
-				fmt.Println("Unable to download default config:", resp.Status)
-				return err
+				return errors.New(fmt.Sprintf("failed to download default config: %s", resp.Status))
 			}
 
 			if err := viper.ReadConfig(resp.Body); err != nil {

@@ -94,8 +94,7 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint) (*
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Println("Unable to fetch bulk trade details", resp.Status)
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("request failed with %s", resp.Status))
 	}
 
 	var bulkTrades Trades
@@ -134,8 +133,7 @@ func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDet
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Println("Unable to fetch trades", resp.Status)
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("request failed with %s", resp.Status))
 	}
 
 	var tradesResponse map[string][]tradeDetail
