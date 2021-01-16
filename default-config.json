@@ -1,5 +1,5 @@
 {
-  "league": "Heist",
+  "league": "Ritual",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -199,6 +199,31 @@
       "id": "awakeners-orb",
       "name": "Awakener's Orb",
       "stackSize": 10
+    },
+    "mavens-orb": {
+      "id": "mavens-orb",
+      "name": "Maven's Orb",
+      "stackSize": 10
+    },
+    "prime-regrading-lens": {
+      "id": "prime-regrading-lens",
+      "name": "Prime Regrading Lens",
+      "stackSize": 20
+    },
+    "secondary-regrading-lens": {
+      "id": "secondary-regrading-lens",
+      "name": "Secondary Regrading Lens",
+      "stackSize": 20
+    },
+    "tempering-orb": {
+      "id": "tempering-orb",
+      "name": "Tempering Orb",
+      "stackSize": 20
+    },
+    "tailoring-orb": {
+      "id": "tailoring-orb",
+      "name": "Tailoring Orb",
+      "stackSize": 20
     },
     "rogues-marker": {
       "id": "rogues-marker",
