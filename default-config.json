@@ -245,6 +245,21 @@
       "name": "Awakened Sextant",
       "stackSize": 10
     },
+    "elevated-sextant": {
+      "id": "elevated-sextant",
+      "name": "Elevated Sextant",
+      "stackSize": 10
+    },
+    "ritual-vessel": {
+      "id": "ritual-vessel",
+      "name": "Ritual Vessel",
+      "stackSize": 10
+    },
+    "orb-of-unmaking": {
+      "id": "orb-of-unmaking",
+      "name": "Orb of Unmaking",
+      "stackSize": 40
+    },
     "stacked-deck": {
       "id": "stacked-deck",
       "name": "Stacked Deck",
