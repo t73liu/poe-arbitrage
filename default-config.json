@@ -1,5 +1,5 @@
 {
-  "league": "Ritual",
+  "league": "Ultimatum",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -170,6 +170,11 @@
       "name": "Perandus Coin",
       "stackSize": 1000
     },
+    "rogues-marker": {
+      "id": "rogues-marker",
+      "name": "Rogue's Marker",
+      "stackSize": 50000
+    },
     "silver": {
       "id": "silver",
       "name": "Silver Coin",
@@ -225,10 +230,15 @@
       "name": "Tailoring Orb",
       "stackSize": 20
     },
-    "rogues-marker": {
-      "id": "rogues-marker",
-      "name": "Rogue's Marker",
-      "stackSize": 50000
+    "stacked-deck": {
+      "id": "stacked-deck",
+      "name": "Stacked Deck",
+      "stackSize": 10
+    },
+    "ritual-vessel": {
+      "id": "ritual-vessel",
+      "name": "Ritual Vessel",
+      "stackSize": 10
     },
     "apprentice-sextant": {
       "id": "apprentice-sextant",
@@ -250,19 +260,14 @@
       "name": "Elevated Sextant",
       "stackSize": 10
     },
-    "ritual-vessel": {
-      "id": "ritual-vessel",
-      "name": "Ritual Vessel",
-      "stackSize": 10
-    },
     "orb-of-unmaking": {
       "id": "orb-of-unmaking",
       "name": "Orb of Unmaking",
       "stackSize": 40
     },
-    "stacked-deck": {
-      "id": "stacked-deck",
-      "name": "Stacked Deck",
+    "veiled-chaos-orb": {
+      "id": "veiled-chaos-orb",
+      "name": "Veiled Chaos Orb",
       "stackSize": 10
     }
   }
