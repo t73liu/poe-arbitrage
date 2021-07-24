@@ -1,5 +1,5 @@
 {
-  "league": "Ultimatum",
+  "league": "Expedition",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -268,6 +268,16 @@
     "veiled-chaos-orb": {
       "id": "veiled-chaos-orb",
       "name": "Veiled Chaos Orb",
+      "stackSize": 10
+    },
+    "enkindling-orb": {
+      "id": "enkindling-orb",
+      "name": "Enkindling Orb",
+      "stackSize": 10
+    },
+    "instilling-orb": {
+      "id": "instilling-orb",
+      "name": "Instilling Orb",
       "stackSize": 10
     }
   }
