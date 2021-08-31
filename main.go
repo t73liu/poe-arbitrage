@@ -1,7 +1,7 @@
 package main
 
 import (
-	"poe-arbitrage/cmd"
+	"github.com/t73liu/poe-arbitrage/cmd"
 )
 
 func main() {

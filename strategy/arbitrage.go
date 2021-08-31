@@ -3,13 +3,14 @@ package strategy
 import (
 	"errors"
 	"fmt"
-	"poe-arbitrage/api"
-	"poe-arbitrage/utils"
 	"strconv"
 	"strings"
+
+	"github.com/t73liu/poe-arbitrage/api"
+	"github.com/t73liu/poe-arbitrage/utils"
 )
 
-// Represents an adjacency list for a directed graph (potentially cyclic)
+// TradingPaths represents an adjacency list for a directed graph (potentially cyclic)
 type TradingPaths struct {
 	tradingPairTrades     map[TradingPair][]api.TradeDetail
 	itemTradingPairs      map[string][]TradingPair

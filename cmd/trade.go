@@ -3,14 +3,16 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"net/http"
-	"poe-arbitrage/api"
-	"poe-arbitrage/strategy"
-	"poe-arbitrage/utils"
 	"sort"
 	"time"
+
+	"github.com/t73liu/poe-arbitrage/api"
+	"github.com/t73liu/poe-arbitrage/strategy"
+	"github.com/t73liu/poe-arbitrage/utils"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var tradeCmd = &cobra.Command{
@@ -76,13 +78,13 @@ func init() {
 
 func validateItems(items []string, errorMsg string) error {
 	if containsDuplicate(items) {
-		return errors.New(errorMsg + "duplicate items")
+		return fmt.Errorf("%s: duplicate items", errorMsg)
 	}
 
 	supportedItems := viper.GetStringMapString("bulkItems")
-	for _, itemId := range items {
-		if _, ok := supportedItems[itemId]; !ok {
-			return errors.New(errorMsg + itemId + " is not a supported item")
+	for _, itemID := range items {
+		if _, ok := supportedItems[itemID]; !ok {
+			return fmt.Errorf("%s: %s is not a supported item", errorMsg, itemID)
 		}
 	}
 
@@ -131,8 +133,8 @@ func analyzeBulkTrades(items []string, capital map[string]int, config Config) er
 			}
 
 			tradeDetails, err := exchangeClient.GetTradeDetails(
-				bulkTrades.Id,
-				utils.Limit(bulkTrades.TradeIds, 20),
+				bulkTrades.ID,
+				utils.Limit(bulkTrades.TradeIDs, 20),
 			)
 			if err != nil {
 				fmt.Println("Unable to fetch trade details:", initialItem, currItem)

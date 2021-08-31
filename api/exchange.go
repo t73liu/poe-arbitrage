@@ -10,17 +10,17 @@ import (
 	"strings"
 )
 
-const baseUrl = "https://www.pathofexile.com/api/trade/"
+const baseURL = "https://www.pathofexile.com/api/trade/"
 
 type Trades struct {
-	Id       string   `json:"id"`
-	TradeIds []string `json:"result"`
+	ID       string   `json:"id"`
+	TradeIDs []string `json:"result"`
 	Total    uint     `json:"total"`
 }
 
 // GGG trade detail is not exposed since it is very verbose and subject to change
 type tradeDetail struct {
-	Id   string `json:"id"`
+	ID   string `json:"id"`
 	Item struct {
 		Identified bool   `json:"identified"`
 		Verified   bool   `json:"verified"`
@@ -79,7 +79,7 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint) (*
 	postStr := getPostParams(initialItem, targetItem, minStock)
 	req, err := http.NewRequest(
 		"POST",
-		baseUrl+"exchange/"+c.league,
+		baseURL+"exchange/"+c.league,
 		bytes.NewBufferString(postStr),
 	)
 	if err != nil {
@@ -94,7 +94,7 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint) (*
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.New(fmt.Sprintf("request failed with %s", resp.Status))
+		return nil, fmt.Errorf("request failed with %s", resp.Status)
 	}
 
 	var bulkTrades Trades
@@ -105,17 +105,17 @@ func (c *Client) GetBulkTrades(initialItem, targetItem string, minStock uint) (*
 	return &bulkTrades, nil
 }
 
-func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDetail, error) {
+func (c *Client) getTradeDetails(queryID string, tradeIDs []string) (*[]tradeDetail, error) {
 	var tradeDetails []tradeDetail
-	if len(tradeIds) == 0 {
+	if len(tradeIDs) == 0 {
 		return &tradeDetails, nil
 	}
-	if len(tradeIds) > 20 {
+	if len(tradeIDs) > 20 {
 		return nil, errors.New("bulk trade API has a max limit of 20 ids")
 	}
 
-	tradeIdsStr := strings.Join(tradeIds, ",")
-	req, err := http.NewRequest("GET", baseUrl+"fetch/"+tradeIdsStr, nil)
+	tradeIDsStr := strings.Join(tradeIDs, ",")
+	req, err := http.NewRequest("GET", baseURL+"fetch/"+tradeIDsStr, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDet
 	req.Header.Set("Content-Type", "application/json")
 	queryParams := req.URL.Query()
 	queryParams.Add("exchange", "")
-	queryParams.Add("query", queryId)
+	queryParams.Add("query", queryID)
 	req.URL.RawQuery = queryParams.Encode()
 
 	resp, err := c.client.Do(req)
@@ -133,7 +133,7 @@ func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDet
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.New(fmt.Sprintf("request failed with %s", resp.Status))
+		return nil, fmt.Errorf("request failed with %s", resp.Status)
 	}
 
 	var tradesResponse map[string][]tradeDetail
@@ -149,8 +149,8 @@ func (c *Client) getTradeDetails(queryId string, tradeIds []string) (*[]tradeDet
 	}
 }
 
-func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDetail, error) {
-	tradeDetails, err := c.getTradeDetails(queryId, tradeIds)
+func (c *Client) GetTradeDetails(queryID string, tradeIDs []string) (*[]TradeDetail, error) {
+	tradeDetails, err := c.getTradeDetails(queryID, tradeIDs)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,8 @@ func (c *Client) GetTradeDetails(queryId string, tradeIds []string) (*[]TradeDet
 	for _, tradeDetail := range *tradeDetails {
 		cost := tradeDetail.Listing.Price.Exchange.Amount
 		itemAmount := tradeDetail.Listing.Price.Item.Amount
-		// Rounding partial amounts can increase trade costs but this rarely happens
+		// TODO: Rounding up partial amounts will increase trade costs but this
+		// rarely happens
 		roundedPriceAmount := uint(math.Ceil(cost))
 		roundedItemAmount := uint(math.Floor(itemAmount))
 		formattedTrade := TradeDetail{

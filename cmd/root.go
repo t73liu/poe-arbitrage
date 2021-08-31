@@ -1,17 +1,18 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
-	"github.com/mitchellh/go-homedir"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"net/http"
 	"os"
 	"path/filepath"
-	"poe-arbitrage/utils"
 	"strings"
 	"time"
+
+	"github.com/t73liu/poe-arbitrage/utils"
+
+	"github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const initialConfig = "https://raw.githubusercontent.com/t73liu/poe-arbitrage/master/default-config.json"
@@ -33,7 +34,7 @@ and is subject to its rate-limits.
 }
 
 type BulkItem struct {
-	Id        string `json:"id"`
+	ID        string `json:"id"`
 	Name      string `json:"name"`
 	StackSize uint   `json:"stackSize"`
 }
@@ -118,7 +119,7 @@ func initConfigE() error {
 			defer resp.Body.Close()
 
 			if resp.StatusCode != http.StatusOK {
-				return errors.New(fmt.Sprintf("failed to download default config: %s", resp.Status))
+				return fmt.Errorf("failed to download default config: %s", resp.Status)
 			}
 
 			if err := viper.ReadConfig(resp.Body); err != nil {

@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"poe-arbitrage/utils"
 	"strconv"
 	"strings"
+
+	"github.com/t73liu/poe-arbitrage/utils"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var configureCmd = &cobra.Command{
@@ -74,7 +76,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 				return errors.New("invalid player name")
 			}
 			if utils.Contains(config.IgnoredPlayers, ignoredPlayer) {
-				return errors.New(ignoredPlayer + " is already ignored")
+				return fmt.Errorf("%s is already ignored", ignoredPlayer)
 			}
 			config.IgnoredPlayers = append(config.IgnoredPlayers, ignoredPlayer)
 		}
@@ -91,7 +93,7 @@ The default config location is "$HOME/poe-arbitrage.json".
 				return errors.New("invalid player name")
 			}
 			if utils.Contains(config.FavoritePlayers, favoritePlayer) {
-				return errors.New(favoritePlayer + " is already favorited")
+				return fmt.Errorf("%s is already favorited", favoritePlayer)
 			}
 			config.FavoritePlayers = append(config.FavoritePlayers, favoritePlayer)
 		}
@@ -114,13 +116,13 @@ The default config location is "$HOME/poe-arbitrage.json".
 				return err
 			}
 
-			itemId := itemSlice[0]
+			itemID := itemSlice[0]
 			item := BulkItem{
-				Id:        itemId,
+				ID:        itemID,
 				Name:      itemSlice[1],
 				StackSize: uint(stackSize),
 			}
-			config.BulkItems[itemId] = item
+			config.BulkItems[itemID] = item
 		}
 
 		configUpdated := leagueUpdated || hardcoreUpdated || excludeAFKUpdated ||

@@ -1,6 +1,6 @@
 package utils
 
-// Greatest common divisor using Euclidean Algorithm
+// CalcGCD calculates greatest common divisor using Euclidean Algorithm
 func CalcGCD(a, b uint) uint {
 	for b != 0 {
 		t := b
