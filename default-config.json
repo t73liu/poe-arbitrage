@@ -1,5 +1,5 @@
 {
-  "league": "Expedition",
+  "league": "Scourge",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -278,6 +278,61 @@
     "instilling-orb": {
       "id": "instilling-orb",
       "name": "Instilling Orb",
+      "stackSize": 10
+    },
+    "tainted-orb-of-fusing": {
+      "id": "tainted-orb-of-fusing",
+      "name": "Tainted Orb of Fusing",
+      "stackSize": 20
+    },
+    "tainted-chromatic-orb": {
+      "id": "tainted-chromatic-orb",
+      "name": "Tainted Chromatic Orb",
+      "stackSize": 20
+    },
+    "tainted-jewellers-orb": {
+      "id": "tainted-jewellers-orb",
+      "name": "Tainted Jeweller's Orb",
+      "stackSize": 20
+    },
+    "tainted-armourers-scrap": {
+      "id": "tainted-armourers-scrap",
+      "name": "Tainted Armourer's Scrap",
+      "stackSize": 40
+    },
+    "tainted-blacksmiths-whetstone": {
+      "id": "tainted-blacksmiths-whetstone",
+      "name": "Tainted Blacksmith's Whetstone",
+      "stackSize": 20
+    },
+    "tainted-mythic-orb": {
+      "id": "tainted-mythic-orb",
+      "name": "Tainted Mythic Orb",
+      "stackSize": 20
+    },
+    "tainted-chaos-orb": {
+      "id": "tainted-chaos-orb",
+      "name": "Tainted Chaos Orb",
+      "stackSize": 10
+    },
+    "tainted-exalted-orb": {
+      "id": "tainted-exalted-orb",
+      "name": "Tainted Exalted Orb",
+      "stackSize": 10
+    },
+    "tainted-divine-teardrop": {
+      "id": "tainted-divine-teardrop",
+      "name": "Tainted Divine Teardrop",
+      "stackSize": 10
+    },
+    "tainted-blessing": {
+      "id": "tainted-blessing",
+      "name": "Tainted Blessing",
+      "stackSize": 10
+    },
+    "sacred-orb": {
+      "id": "sacred-orb",
+      "name": "Sacred Orb",
       "stackSize": 10
     }
   }
