@@ -1,5 +1,5 @@
 {
-  "league": "Scourge",
+  "league": "Archnemesis",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -165,20 +165,10 @@
       "name": "Eternal Orb",
       "stackSize": 10
     },
-    "p": {
-      "id": "p",
-      "name": "Perandus Coin",
-      "stackSize": 1000
-    },
     "rogues-marker": {
       "id": "rogues-marker",
       "name": "Rogue's Marker",
       "stackSize": 50000
-    },
-    "silver": {
-      "id": "silver",
-      "name": "Silver Coin",
-      "stackSize": 30
     },
     "crusaders-exalted-orb": {
       "id": "crusaders-exalted-orb",
@@ -207,7 +197,7 @@
     },
     "mavens-orb": {
       "id": "mavens-orb",
-      "name": "Maven's Orb",
+      "name": "Orb of Dominance",
       "stackSize": 10
     },
     "prime-regrading-lens": {
@@ -230,26 +220,6 @@
       "name": "Tailoring Orb",
       "stackSize": 20
     },
-    "stacked-deck": {
-      "id": "stacked-deck",
-      "name": "Stacked Deck",
-      "stackSize": 10
-    },
-    "ritual-vessel": {
-      "id": "ritual-vessel",
-      "name": "Ritual Vessel",
-      "stackSize": 10
-    },
-    "apprentice-sextant": {
-      "id": "apprentice-sextant",
-      "name": "Simple Sextant",
-      "stackSize": 10
-    },
-    "journeyman-sextant": {
-      "id": "journeyman-sextant",
-      "name": "Prime Sextant",
-      "stackSize": 10
-    },
     "master-sextant": {
       "id": "master-sextant",
       "name": "Awakened Sextant",
@@ -258,6 +228,11 @@
     "elevated-sextant": {
       "id": "elevated-sextant",
       "name": "Elevated Sextant",
+      "stackSize": 10
+    },
+    "surveyors-compass": {
+      "id": "surveyors-compass",
+      "name": "Surveyor's Compass",
       "stackSize": 10
     },
     "orb-of-unmaking": {
@@ -280,59 +255,39 @@
       "name": "Instilling Orb",
       "stackSize": 10
     },
-    "tainted-orb-of-fusing": {
-      "id": "tainted-orb-of-fusing",
-      "name": "Tainted Orb of Fusing",
-      "stackSize": 20
-    },
-    "tainted-chromatic-orb": {
-      "id": "tainted-chromatic-orb",
-      "name": "Tainted Chromatic Orb",
-      "stackSize": 20
-    },
-    "tainted-jewellers-orb": {
-      "id": "tainted-jewellers-orb",
-      "name": "Tainted Jeweller's Orb",
-      "stackSize": 20
-    },
-    "tainted-armourers-scrap": {
-      "id": "tainted-armourers-scrap",
-      "name": "Tainted Armourer's Scrap",
-      "stackSize": 40
-    },
-    "tainted-blacksmiths-whetstone": {
-      "id": "tainted-blacksmiths-whetstone",
-      "name": "Tainted Blacksmith's Whetstone",
-      "stackSize": 20
-    },
-    "tainted-mythic-orb": {
-      "id": "tainted-mythic-orb",
-      "name": "Tainted Mythic Orb",
-      "stackSize": 20
-    },
-    "tainted-chaos-orb": {
-      "id": "tainted-chaos-orb",
-      "name": "Tainted Chaos Orb",
-      "stackSize": 10
-    },
-    "tainted-exalted-orb": {
-      "id": "tainted-exalted-orb",
-      "name": "Tainted Exalted Orb",
-      "stackSize": 10
-    },
-    "tainted-divine-teardrop": {
-      "id": "tainted-divine-teardrop",
-      "name": "Tainted Divine Teardrop",
-      "stackSize": 10
-    },
-    "tainted-blessing": {
-      "id": "tainted-blessing",
-      "name": "Tainted Blessing",
-      "stackSize": 10
-    },
     "sacred-orb": {
       "id": "sacred-orb",
       "name": "Sacred Orb",
+      "stackSize": 10
+    },
+    "stacked-deck": {
+      "id": "stacked-deck",
+      "name": "Stacked Deck",
+      "stackSize": 10
+    },
+    "ritual-vessel": {
+      "id": "ritual-vessel",
+      "name": "Ritual Vessel",
+      "stackSize": 10
+    },
+    "eldritch-chaos": {
+      "id": "eldritch-chaos",
+      "name": "Eldritch Chaos Orb",
+      "stackSize": 10
+    },
+    "eldritch-exalted": {
+      "id": "eldritch-exalted",
+      "name": "Eldritch Exalted Orb",
+      "stackSize": 10
+    },
+    "eldritch-annul": {
+      "id": "eldritch-annul",
+      "name": "Eldritch Orb of Annulment",
+      "stackSize": 20
+    },
+    "orb-of-conflict": {
+      "id": "orb-of-conflict",
+      "name": "Orb of Conflict",
       "stackSize": 10
     }
   }
