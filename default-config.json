@@ -1,5 +1,5 @@
 {
-  "league": "Archnemesis",
+  "league": "Sentinel",
   "hardcore": false,
   "excludeAFK": true,
   "ignoredPlayers": [],
@@ -284,6 +284,46 @@
       "id": "eldritch-annul",
       "name": "Eldritch Orb of Annulment",
       "stackSize": 20
+    },
+    "lesser-eldritch-ember": {
+      "id": "lesser-eldritch-ember",
+      "name": "Lesser Eldritch Ember",
+      "stackSize": 10
+    },
+    "greater-eldritch-ember": {
+      "id": "greater-eldritch-ember",
+      "name": "Greater Eldritch Ember",
+      "stackSize": 10
+    },
+    "grand-eldritch-ember": {
+      "id": "grand-eldritch-ember",
+      "name": "Grand Eldritch Ember",
+      "stackSize": 10
+    },
+    "exceptional-eldritch-ember": {
+      "id": "exceptional-eldritch-ember",
+      "name": "Exceptional Eldritch Ember",
+      "stackSize": 10
+    },
+    "lesser-eldritch-ichor": {
+      "id": "lesser-eldritch-ichor",
+      "name": "Lesser Eldritch Ichor",
+      "stackSize": 10
+    },
+    "greater-eldritch-ichor": {
+      "id": "greater-eldritch-ichor",
+      "name": "Greater Eldritch Ichor",
+      "stackSize": 10
+    },
+    "grand-eldritch-ichor": {
+      "id": "grand-eldritch-ichor",
+      "name": "Grand Eldritch Ichor",
+      "stackSize": 10
+    },
+    "exceptional-eldritch-ichor": {
+      "id": "exceptional-eldritch-ichor",
+      "name": "Exceptional Eldritch Ichor",
+      "stackSize": 10
     },
     "orb-of-conflict": {
       "id": "orb-of-conflict",
